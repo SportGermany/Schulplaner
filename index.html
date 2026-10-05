@@ -161,17 +161,25 @@ select.small { border: 1px solid var(--line); background: var(--s1); border-radi
 /* Listen (Agenda, Briefing, Aufgaben) */
 .page { flex: 1; overflow-y: auto; padding: 22px 24px 120px; }
 .page-in { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
-.hello h2 { font-size: 28px; margin: 0; letter-spacing: -.02em; font-weight: 700; }
+@media (min-width: 1100px) {
+  .page-in.dash { max-width: 1240px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; align-items: start; }
+  .page-in.dash > .hello, .page-in.dash > .summary, .page-in.dash > .qa { grid-column: 1 / -1; }
+  .page-in.dash > .hello { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+  .page-in.dash .grid2 { display: contents; }
+  .page-in.dash > .card.wide { grid-column: span 2; }
+}
+@media (min-width: 761px) and (max-width: 1099px) { .page-in { max-width: 900px; } }
+.hello h2 { font-size: 30px; margin: 0; letter-spacing: -.025em; font-weight: 750; }
 .hello p { margin: 4px 0 0; color: var(--muted); }
 .summary { font-size: 16px; line-height: 1.5; }
-.card { background: var(--s1); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
+.card { background: var(--s1); border: 1px solid var(--line); border-radius: 18px; padding: 18px; box-shadow: 0 1px 0 rgba(255,255,255,.03) inset, 0 6px 20px rgba(0,0,0,.12); }
 .card h3 { margin: 0 0 10px; font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 600; display: flex; align-items: center; gap: 8px; }
 .card h3 .sp { flex: 1; }
 .grid2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; }
 .next { display: flex; gap: 14px; align-items: center; }
 .next .when { font-size: 26px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
 .next .what { font-size: 17px; font-weight: 600; }
-.row { display: flex; gap: 12px; align-items: flex-start; padding: 8px 6px; border-radius: 8px; cursor: pointer; }
+.row { display: flex; gap: 12px; align-items: flex-start; padding: 9px 8px; border-radius: 10px; cursor: pointer; min-height: 44px; }
 .row:hover { background: var(--s2); }
 .row .tm { width: 92px; flex: none; font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; padding-top: 1px; }
 .row .bar2 { width: 3px; align-self: stretch; border-radius: 2px; background: var(--c); flex: none; }
@@ -246,6 +254,9 @@ select.small { border: 1px solid var(--line); background: var(--s1); border-radi
 .swatches button.auto { background: conic-gradient(#2d4a6b, #2f7d57, #c0303f, #b4532a, #2d4a6b); }
 .toggle { display: flex; align-items: center; gap: 8px; font-size: 14px; cursor: pointer; }
 .hint { font-size: 12px; color: var(--muted); }
+.nudge { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(86px + env(safe-area-inset-bottom, 0px)); z-index: 70; display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+  background: var(--s2); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; box-shadow: 0 12px 30px rgba(0,0,0,.35); max-width: min(560px, calc(100% - 24px)); font-size: 14px; }
+.nudge span { flex: 1; min-width: 200px; }
 .scrim { position: fixed; inset: 0; background: rgba(20,18,15,.35); z-index: 39; display: none; }
 .scrim.on { display: block; }
 
@@ -266,6 +277,13 @@ select.small { border: 1px solid var(--line); background: var(--s1); border-radi
 .tabbar { display: none; }
 .fab { display: none; }
 @media (max-width: 1000px) {
+  .tabbar { display: flex; border-top: 1px solid var(--line); background: var(--bg); padding: 4px 6px calc(4px + env(safe-area-inset-bottom, 0px)); }
+  .tabbar button { flex: 1; border: 0; background: none; padding: 7px 0 5px; font-size: 11.5px; font-weight: 600; color: var(--muted); display: flex; flex-direction: column; align-items: center; gap: 3px; min-height: 52px; }
+  .tabbar button.on { color: var(--acc); }
+  .tabbar svg { width: 23px; height: 23px; }
+  .fab { display: flex; position: fixed; right: 18px; bottom: calc(80px + env(safe-area-inset-bottom, 0px)); width: 56px; height: 56px; border-radius: 18px; border: 0;
+    background: var(--acc); color: var(--accfg); font-size: 28px; align-items: center; justify-content: center; box-shadow: 0 8px 22px rgba(0,0,0,.35); z-index: 30; }
+  .bar .desk { display: none; }
   .side { position: fixed; left: 0; top: 0; bottom: 0; z-index: 45; transform: translateX(-105%); transition: transform .18s ease; box-shadow: 10px 0 30px rgba(0,0,0,.12); }
   .side.open { transform: none; }
   .menu-btn { display: inline-flex; }
@@ -281,12 +299,7 @@ select.small { border: 1px solid var(--line); background: var(--s1); border-radi
   .seg button { padding: 5px 8px; }
   .panel { top: auto; height: 92%; width: 100%; border-left: 0; border-top: 1px solid var(--line); border-radius: 18px 18px 0 0; transform: translateY(105%); }
   .panel.open { transform: none; }
-  .tabbar { display: flex; border-top: 1px solid var(--line); background: var(--bg); padding: 4px 6px calc(4px + env(safe-area-inset-bottom, 0px)); }
-  .tabbar button { flex: 1; border: 0; background: none; padding: 6px 0 4px; font-size: 11px; font-weight: 600; color: var(--muted); display: flex; flex-direction: column; align-items: center; gap: 2px; }
-  .tabbar button.on { color: var(--ink); }
-  .tabbar svg { width: 22px; height: 22px; }
-  .fab { display: flex; position: fixed; right: 16px; bottom: calc(74px + env(safe-area-inset-bottom, 0px)); width: 54px; height: 54px; border-radius: 16px; border: 0;
-    background: var(--acc); color: var(--accfg); font-size: 28px; align-items: center; justify-content: center; box-shadow: 0 6px 18px rgba(0,0,0,.22); z-index: 30; }
+  .fab { right: 14px; bottom: calc(76px + env(safe-area-inset-bottom, 0px)); }
   .page { padding: 16px 14px 120px; }
   .grid2 { grid-template-columns: 1fr; }
   .hello h2 { font-size: 24px; }
@@ -330,9 +343,22 @@ select.small { border: 1px solid var(--line); background: var(--s1); border-radi
     kalender: { bg: "bg", s1: "s1", s2: "s2", s3: "s3", line: "line", line2: "s2", ink: "ink", muted: "muted", faint: "faint", acc: "acc", accfg: "accfg" }
   };
   // Laptop-Anpassungen: schmale Handy-Spalten verbreitern, zu breite Seiten mittig begrenzen
+  // Doppelte Design-Schalter der einzelnen Apps ausblenden: Farben kommen für alle aus dem Bereich „Design“.
   var LAYOUT = {
-    panel: "@media(min-width:900px){.onb{padding-left:max(24px,calc(50vw - 380px))!important;padding-right:max(24px,calc(50vw - 380px))!important}}",
-    bibel: "@media(min-width:900px){.app,.overlay-inner{max-width:720px}}"
+    panel: "@media(min-width:900px){.onb{padding-left:max(24px,calc(50vw - 380px))!important;padding-right:max(24px,calc(50vw - 380px))!important}}" +
+      // Training auf Tablet quer / Laptop: Karten in zwei Spalten statt einer langen Liste
+      "@media(min-width:1100px){#s-heute.active,#s-lauf.active,#s-fitness.active,#s-daten.active{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:18px;align-items:stretch;align-content:start}" +
+      "#s-heute.active>*,#s-lauf.active>*,#s-fitness.active>*,#s-daten.active>*{min-width:0}" +
+      "#s-heute>.brand,#s-heute>.top,#s-lauf>.top,#s-fitness>.top,#s-daten>.top,.screen.active>.sec-label,.screen.active>.hero,.screen.active>.stat-row,.screen.active>.bento,.screen.active>.widget-area,.screen.active>button,.screen.active>p{grid-column:1/-1}}" +
+      ".row:has(#setSkin),#themeRow,#navyPanelRow,.row:has(#setThemeMode),.row:has(#setSkinMode),#modernAccentRow,.row:has(#setAccentPerGoal){display:none!important}" +
+      // Denkpause im Planer: Wetter und eigener Verlauf-Kalender sind doppelt (Planer-Kalender, Wetter im Training)
+      "html.sg-embed .tab[data-t=kalender],html.sg-embed .card:has(#citySearchBtn),html.sg-embed .sec-label:has(+ .card #citySearchBtn){display:none!important}",
+    bibel: "@media(min-width:900px){.app,.overlay-inner{max-width:720px}}#themeRow [data-theme=light]{display:none!important}",
+    rodeln: ".set:has([data-theme-set]),.set:has(#chkBtn),#chkOut,.set:has(#instGo2),html.sg-embed .install{display:none!important}" +
+      "@media(min-width:900px){.app{max-width:780px}}" +
+      // Systemschrift ist breiter als die frühere schmale Schrift: Startknopf auf kleinen Handys anpassen
+      ".start{letter-spacing:.02em;flex-wrap:wrap}@media(max-width:400px){.start{font-size:17px;padding:13px 10px;gap:6px}}",
+    puls: "@media(min-width:900px){.wrap{max-width:820px}}"
   };
   var FONTVARS = { rodeln: ["fd", "fb"], puls: ["font-display", "font-body"], bibel: ["sans"] };
   var script = document.currentScript;
@@ -472,7 +498,8 @@ function calendars() {
   C.list().concat(C.tasks.list()).forEach(function (e) { used[e.app] = 1; });
   var core = { Kalender: 1, Lernplan: 1, Training: 1 };
   var list = C.sources.filter(function (a) { return core[a[0]] || used[a[0]]; }).map(function (a) { return { name: a[0], color: a[1] }; });
-  list.push({ name: "Schulferien", color: "#4f8a5b" });
+  if (lpDb()) list.splice(1, 0, { name: "Stundenplan", color: "#7f9cf5" });
+  list.push({ name: "Ferien & Feiertage", color: "#4f8a5b" });
   C.list().concat(C.tasks.list()).forEach(function (e) {
     if (e.app && !list.some(function (c) { return c.name === e.app; })) list.push({ name: e.app, color: PALETTE[list.length % PALETTE.length] });
   });
@@ -494,7 +521,7 @@ function styleVars(e) { var c = tone(colorOf(e)); return "--c:" + c + ";--cb:" +
 /* ---------- Verbundene Daten aus Lernplan (nur lesen) ----------
  * Lernplan hat einen eigenen Speicher und eigenen Sync. Der Kalender zeigt dessen Prüfungen,
  * Schultermine, Lehrgänge und offene Hausaufgaben an, ändert dort aber nichts. */
-var LP_KEY = "schulkalender-bayern-v1", LP_URL = "../Schulplaner/", TB_URL = "../trainingsblog/";
+var LP_KEY = "schulkalender-bayern-v1", LP_URL = "#schule", TB_URL = "../trainingsblog/";
 var LP_TYPES = { sa: ["Schulaufgabe", "#e5484d"], ka: ["Kurzarbeit", "#c99200"], ex: ["Ex", "#f76b15"], test: ["Test", "#d6409f"], referat: ["Referat", "#8e4ec6"],
   abgabe: ["Abgabe", "#0090ff"], termin: ["Schultermin", "#12a594"], frei: ["Schulfrei", "#30a46c"], sonst: ["", "#8d8d8d"], ap: ["Abschlussprüfung", "#b4231e"] };
 var FERIEN = [["Sommerferien", "2024-07-29", "2024-09-09"], ["Herbstferien", "2024-10-28", "2024-10-31"], ["Weihnachtsferien", "2024-12-23", "2025-01-03"],
@@ -511,15 +538,41 @@ var FERIEN = [["Sommerferien", "2024-07-29", "2024-09-09"], ["Herbstferien", "20
   ["Frühjahrsferien", "2030-03-04", "2030-03-08"], ["Osterferien", "2030-04-15", "2030-04-26"], ["Pfingstferien", "2030-06-11", "2030-06-21"],
   ["Sommerferien", "2030-07-29", "2030-09-09"]];
 var EXT = {};
-function lpDb() { try { return JSON.parse(localStorage.getItem(LP_KEY) || "null"); } catch (e) { return null; } }
+// Gelesene Fremddaten zwischenspeichern: neu ausgewertet wird nur, wenn sich der gespeicherte Text ändert
+var JCACHE = {};
+function jsonKey(k) {
+  var raw = null; try { raw = localStorage.getItem(k); } catch (e) {}
+  var c = JCACHE[k]; if (c && c.raw === raw) return c.val;
+  var val = null; try { val = JSON.parse(raw || "null"); } catch (e) {}
+  JCACHE[k] = { raw: raw, val: val }; return val;
+}
+function lpDb() { return jsonKey(LP_KEY); }
 function spanDays(start, end, from, to, fn) {
   var a = start > from ? start : from, b = (end || start) < to ? (end || start) : to;
   for (var k = a; k <= b; k = addDays(k, 1)) fn(k);
 }
-function extItems(from, to) {
+function extItems(from, to, withLessons) {
   var out = [];
   FERIEN.forEach(function (f) {
-    spanDays(f[1], f[2], from, to, function (k) { out.push({ id: "fe-" + f[1], title: f[0], date: k, time: "", app: "Schulferien", ro: "Bayerische Schulferien", span: [f[1], f[2]] }); });
+    spanDays(f[1], f[2], from, to, function (k) { out.push({ id: "fe-" + f[1], title: f[0], date: k, time: "", app: "Ferien & Feiertage", ro: "Bayerische Schulferien", span: [f[1], f[2]] }); });
+  });
+  for (var hd = from; hd <= to; hd = addDays(hd, 1)) {
+    var hn = holidayName(hd);
+    if (hn) out.push({ id: "fh-" + hd, title: hn, date: hd, time: "", app: "Ferien & Feiertage", ro: "Gesetzlicher Feiertag in Bayern" });
+  }
+  // Stundenplan nur in Tag/3 Tage/Woche – im Monat wäre es zu voll
+  if (withLessons) for (var ld = from; ld <= to; ld = addDays(ld, 1)) {
+    var si = schoolInfo(ld);
+    if (si && si.lessons) si.lessons.forEach(function (l) {
+      if (!l.s) return;
+      out.push({ id: "ls-" + ld + "-" + l.n, title: l.name + (l.room ? " · " + l.room : ""), date: ld, time: l.s, end: l.e, app: "Stundenplan", color: l.color, ro: "Stundenplan", link: LP_URL });
+    });
+  }
+  // Geplante Atemübungen aus Training (Atmung & HRV)
+  var pp = jsonKey("pulsplan.v1");
+  if (pp && pp.entries) pp.entries.forEach(function (e) {
+    if (!e.date || e.date < from || e.date > to) return;
+    out.push({ id: "pp-" + e.id, title: e.type || "Atemübung", date: e.date, time: e.time || "", end: e.time ? hm(mins(e.time) + (+e.dur || 10)) : "", app: "Training", ro: "Training", link: TB_URL + "#atmung", note: e.note || "" });
   });
   var db = lpDb();
   if (db) {
@@ -554,17 +607,18 @@ function extItems(from, to) {
   out.forEach(function (e) { EXT[e.id] = e; });
   return out;
 }
-function jsonKey(k) { try { return JSON.parse(localStorage.getItem(k) || "null"); } catch (e) { return null; } }
+
 function homework() {
   var db = lpDb(); if (!db) return [];
-  return (db.homework || []).filter(function (h) { return !h.done && h.due; }).map(function (h) {
+  var t0 = addDays(today(), -14);
+  return (db.homework || []).filter(function (h) { return h.due && (!h.done || h.due >= t0); }).map(function (h) {
     var sn = ((db.subjects || []).find(function (x) { return x.id === h.subject; }) || {}).short || "";
-    var t = { id: "hw-" + h.id, title: (sn ? sn + ": " : "") + (h.text || "Hausaufgabe"), due: h.due, done: false, prio: 0, note: h.notes || "", app: "Lernplan", ro: "Lernplan", link: LP_URL };
+    var t = { id: "hw-" + h.id, title: (sn ? sn + ": " : "") + (h.text || "Hausaufgabe"), due: h.due, done: !!h.done, prio: 0, note: h.notes || "", app: "Lernplan", ro: "Schule", link: LP_URL };
     EXT[t.id] = t; return t;
   });
 }
-function occ(from, to) {
-  return C.occurrences(from, to).concat(extItems(from, to)).filter(visible)
+function occ(from, to, withLessons) {
+  return C.occurrences(from, to).concat(extItems(from, to, withLessons)).filter(visible)
     .sort(function (a, b) { return (a.date + (a.time || "")).localeCompare(b.date + (b.time || "")); });
 }
 function tasksAll() { return C.tasks.list().concat(homework()).filter(visible); }
@@ -604,26 +658,27 @@ function renderBar() {
   }
   if (S.tab === "brief") title = "Heute";
   else if (S.tab === "tasks") title = "Aufgaben";
-  else if (S.view === "m") { var d = parse(S.anchor); title = MON[d.getMonth()] + " " + d.getFullYear(); }
+  else if (S.view === "m") { var d = parse(S.anchor); title = (innerWidth <= 400 ? MS : MON)[d.getMonth()] + " " + d.getFullYear(); }
   else if (S.view === "a") title = "Agenda";
   else {
     var a = parse(r[0]), b = parse(r[1]);
-    title = a.getMonth() === b.getMonth() ? MON[a.getMonth()] + " " + a.getFullYear() : MS[a.getMonth()] + " – " + MS[b.getMonth()] + " " + b.getFullYear();
+    title = a.getMonth() === b.getMonth() ? (innerWidth <= 400 ? MS : MON)[a.getMonth()] + " " + a.getFullYear() : MS[a.getMonth()] + " – " + MS[b.getMonth()] + " " + b.getFullYear();
     if (S.view === "w") sub = "KW " + kw(r[0]);
   }
   var cal = S.tab === "cal";
   var h = "<button class='ib menu-btn' data-a='menu' aria-label='Menü'>☰</button><h1>" + esc(title) + (sub ? "<small>" + sub + "</small>" : "") + "</h1>";
-  if (cal) h += "<button class='ib' data-a='prev' aria-label='Zurück'>‹</button><button class='ib' data-a='next' aria-label='Weiter'>›</button>";
+  // Auf schmalen Handys blättert man per Wischen – Platz für den Titel
+  if (cal && innerWidth > 400) h += "<button class='ib' data-a='prev' aria-label='Zurück'>‹</button><button class='ib' data-a='next' aria-label='Weiter'>›</button>";
   h += "<span class='sp'></span>";
   if (cal) {
     h += "<button class='btn' data-a='today'>Heute</button>";
     var views = [["1", "Tag"], ["3", "3 Tage"], ["w", "Woche"], ["m", "Monat"], ["a", "Agenda"]];
-    if (MOBILE()) h += "<select class='vsel' data-a='vsel' aria-label='Ansicht'>" + views.map(function (v) { return "<option value='" + v[0] + "'" + (S.view === v[0] ? " selected" : "") + ">" + v[1] + "</option>"; }).join("") + "</select>";
+    if (innerWidth <= 1000) h += "<select class='vsel' data-a='vsel' aria-label='Ansicht'>" + views.map(function (v) { return "<option value='" + v[0] + "'" + (S.view === v[0] ? " selected" : "") + ">" + v[1] + "</option>"; }).join("") + "</select>";
     else h += "<div class='seg' role='tablist'>" + views.map(function (v) {
       return "<button data-view='" + v[0] + "' class='" + (S.view === v[0] ? "on" : "") + "'>" + v[1] + "</button>";
     }).join("") + "</div>";
   }
-  if (!MOBILE()) {
+  if (innerWidth > 1000) {
     h += "<button class='btn p desk' data-a='new'>Neu</button><button class='ib desk' data-a='palette' title='Suchen (Strg+K)' aria-label='Suchen'>⌕</button>";
   } else h += "<button class='ib' data-a='palette' aria-label='Suchen'>⌕</button>";
   $("bar").innerHTML = h;
@@ -692,7 +747,7 @@ function layoutDay(evs) {
 }
 function renderGrid(days) {
   var t = today(), nm = nowMin(), hour = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--hour"));
-  var evs = occ(days[0], days[days.length - 1]);
+  var evs = occ(days[0], days[days.length - 1], true);
   var h = "<div class='tg' style='--n:" + days.length + "'>";
   h += "<div class='tg-head'><div></div>" + days.map(function (k) {
     var d = parse(k);
@@ -821,7 +876,7 @@ function freeSlots(evs, from, to) {
 }
 function renderBrief() {
   var t = today(), nm = nowMin(), hr = new Date().getHours();
-  var noHol = function (e) { return e.app !== "Schulferien"; };
+  var noHol = function (e) { return e.app !== "Ferien & Feiertage"; };
   var hol = occ(t, t).filter(function (e) { return !noHol(e); })[0];
   var todayEv = occ(t, t).filter(noHol), tomorrow = occ(addDays(t, 1), addDays(t, 1)).filter(noHol);
   var open = tasksAll().filter(function (x) { return !x.done; });
@@ -830,8 +885,10 @@ function renderBrief() {
   var upcoming = timed.filter(function (e) { var en = mins(e.end); return (en != null && en > mins(e.time) ? en : mins(e.time) + 60) > nm; });
   var next = upcoming[0];
   var greet = hr < 11 ? "Guten Morgen" : hr < 18 ? "Guten Tag" : "Guten Abend";
-  var h = "<div class='page'><div class='page-in'>";
-  h += "<div class='hello'><h2>" + greet + ".</h2><p>" + long(t) + " · KW " + kw(t) + "</p></div>";
+  var h = "<div class='page'><div class='page-in dash'>";
+  var wd0 = weatherDay(t);
+  h += "<div class='hello'><h2>" + greet + ".</h2><p>" + long(t) + " · KW " + kw(t) +
+    (wd0 ? " · " + wd0.tmax + "° / " + wd0.tmin + "° · " + wmoText(wd0.code) + (wd0.pop != null && wd0.pop >= 30 ? " · Regen " + wd0.pop + " %" : "") : "") + "</p></div>";
   // Zusammenfassung in einem Satz
   var parts = [];
   parts.push(todayEv.length ? (todayEv.length === 1 ? "einen Termin" : todayEv.length + " Termine") : "keine Termine");
@@ -865,10 +922,11 @@ function renderBrief() {
     return "<span>" + hm(x[0]) + "–" + hm(x[1]) + " · " + dur(x[1] - x[0]) + "</span>"; }).join("") + "</div>" : "<div class='empty'>Bis 21 Uhr ist alles verplant.</div>") + "</div>";
   // Nächste sieben Tage
   var wk = occ(t, addDays(t, 6));
-  h += "<div class='card'><h3>Die nächsten 7 Tage<span class='sp'></span><button class='btn' data-a='toweek'>Woche öffnen</button></h3><div class='week7'>";
+  h += "<div class='card wide'><h3>Die nächsten 7 Tage<span class='sp'></span><button class='btn' data-a='toweek'>Woche öffnen</button></h3><div class='week7'>";
   for (var i = 0; i < 7; i++) {
-    var k = addDays(t, i), d = parse(k), l = wk.filter(function (e) { return e.date === k; });
-    h += "<button class='" + (i === 0 ? "t" : "") + "' data-day='" + k + "' data-v='1'><small>" + WDS[d.getDay()] + "</small><b>" + d.getDate() + "</b><small>" + (l.length ? l.length + (l.length === 1 ? " Termin" : " Termine") : "frei") +
+    var k = addDays(t, i), d = parse(k), l = wk.filter(function (e) { return e.date === k && e.app !== "Ferien & Feiertage"; });
+    var wdx = weatherDay(k);
+    h += "<button class='" + (i === 0 ? "t" : "") + "' data-day='" + k + "' data-v='1'><small>" + WDS[d.getDay()] + (wdx ? " · " + wdx.tmax + "°" : "") + "</small><b>" + d.getDate() + "</b><small>" + (l.length ? l.length + (l.length === 1 ? " Termin" : " Termine") : "frei") +
       "</small><i>" + l.slice(0, 5).map(function (e) { return "<em style='--c:" + colorT(e) + "'></em>"; }).join("") + "</i></button>";
   }
   h += "</div>";
@@ -888,11 +946,14 @@ function easterSun(y) {
     h = (19 * a + b - d - g + 15) % 30, i = Math.floor(c / 4), k = c % 4, l = (32 + 2 * e + 2 * i - h - k) % 7, m = Math.floor((a + 11 * h + 22 * l) / 451);
   return iso(new Date(y, Math.floor((h + l - 7 * m + 114) / 31) - 1, ((h + l - 7 * m + 114) % 31) + 1));
 }
-function holidayBY(dstr) { // gesetzliche Feiertage Bayern (wie im Lernplan)
-  var y = +dstr.slice(0, 4), e = easterSun(y), md = dstr.slice(5);
-  if (["01-01", "01-06", "05-01", "08-15", "10-03", "11-01", "12-25", "12-26"].indexOf(md) > -1) return true;
-  return [-2, 1, 39, 50, 60].some(function (n) { return addDays(e, n) === dstr; });
+var HOL_FIX = { "01-01": "Neujahr", "01-06": "Heilige Drei Könige", "05-01": "Tag der Arbeit", "08-15": "Mariä Himmelfahrt", "10-03": "Tag der Deutschen Einheit", "11-01": "Allerheiligen", "12-25": "1. Weihnachtstag", "12-26": "2. Weihnachtstag" };
+var HOL_EASTER = [[-2, "Karfreitag"], [1, "Ostermontag"], [39, "Christi Himmelfahrt"], [50, "Pfingstmontag"], [60, "Fronleichnam"]];
+function holidayName(dstr) { // gesetzliche Feiertage Bayern (wie im Lernplan)
+  if (HOL_FIX[dstr.slice(5)]) return HOL_FIX[dstr.slice(5)];
+  var e = easterSun(+dstr.slice(0, 4)), hit = HOL_EASTER.find(function (h) { return addDays(e, h[0]) === dstr; });
+  return hit ? hit[1] : "";
 }
+function holidayBY(dstr) { return !!holidayName(dstr); }
 function schoolInfo(d) {
   var db = lpDb(); if (!db) return null;
   var wd = parse(d).getDay();
@@ -951,12 +1012,25 @@ function bibleToday() {
   var b = jsonKey("zweiminutenbibel_v2"); if (!b) return null;
   return { read: b.lastDate === today(), streak: b.streak || 0 };
 }
+// Wetter aus dem Training (dort eingestellt und geladen) – hier nur gelesen
+function weatherDay(d) {
+  var w = jsonKey("wk_weather_cache"); if (!w || !w.data || !w.data.days) return null;
+  return w.data.days.find(function (x) { return x.date === d; }) || null;
+}
+function wmoText(c) {
+  return c === 0 ? "Klar" : c <= 2 ? "Teils bewölkt" : c === 3 ? "Bedeckt" : c <= 48 ? "Nebel" : c <= 57 ? "Nieselregen" : c <= 67 ? "Regen" : c <= 77 ? "Schnee" : c <= 82 ? "Regenschauer" : c <= 86 ? "Schneeschauer" : "Gewitter";
+}
+function studyToday() {
+  var db = lpDb(); if (!db || !db.study) return 0;
+  var t = today(); return db.study.filter(function (x) { return x.date === t; }).reduce(function (a, x) { return a + (+x.min || 0); }, 0);
+}
 function briefExtras() {
   var t = today(), h = "";
   var si = schoolInfo(t), ex = upcomingExams(3);
   if (si || ex.length) {
     h += "<div class='grid2'>";
-    h += "<div class='card'><h3>Schule heute" + (si && si.week ? " · " + si.week + "-Woche" : "") + "<span class='sp'></span><button class='btn' data-tab='schule'>Öffnen</button></h3>";
+    var stm = studyToday();
+    h += "<div class='card'><h3>Schule heute" + (si && si.week ? " · " + si.week + "-Woche" : "") + (stm ? " · " + stm + " Min. gelernt" : "") + "<span class='sp'></span><button class='btn' data-tab='schule'>Öffnen</button></h3>";
     if (!si) h += "<div class='empty'>Noch kein Stundenplan.</div>";
     else if (si.free) h += "<div class='empty'>Kein Unterricht – " + esc(si.free) + ".</div>";
     else if (!si.lessons.length) h += "<div class='empty'>Für heute ist kein Stundenplan eingetragen.</div>";
@@ -1085,15 +1159,19 @@ function render() {
   }
 }
 // Jedes Modul wird nur einmal geladen und bleibt beim Wechseln erhalten (Eingaben gehen nicht verloren).
-function showModule(id) {
-  var box = $("mods");
-  Array.prototype.forEach.call(box.children, function (f) { f.hidden = f.dataset.mod !== id; });
-  if (!box.querySelector("[data-mod='" + id + "']")) {
-    var f = document.createElement("iframe");
-    f.dataset.mod = id; f.src = MODS[id].src; f.title = MODS[id].title;
-    box.appendChild(f);
-  }
+function loadModule(id, hidden) {
+  var box = $("mods"), f = box.querySelector("[data-mod='" + id + "']");
+  if (!f) { f = document.createElement("iframe"); f.dataset.mod = id; f.src = MODS[id].src; f.title = MODS[id].title; f.hidden = !!hidden; box.appendChild(f); }
+  return f;
 }
+function showModule(id) {
+  loadModule(id);
+  Array.prototype.forEach.call($("mods").children, function (f) { f.hidden = f.dataset.mod !== id; });
+}
+// Schneller wechseln: Schule und Pause im Leerlauf schon im Hintergrund laden
+(window.requestIdleCallback || function (f) { return setTimeout(f, 2500); })(function () {
+  setTimeout(function () { Object.keys(MODS).forEach(function (id) { if (!MODS[S.tab] || S.tab !== id) loadModule(id, true); }); }, 1500);
+}, { timeout: 4000 });
 function setTab(t) {
   if (t === S.tab) return;
   if (!MODS[t]) S.prevTab = t; else if (!MODS[S.tab]) S.prevTab = S.tab;
@@ -1101,7 +1179,20 @@ function setTab(t) {
   if (location.hash !== "#" + t) history.replaceState(null, "", "#" + t);
   closeSide(); render(); $("view").scrollTop = 0;
 }
-addEventListener("hashchange", function () { var h = location.hash.replace("#", ""); if (["brief", "cal", "tasks", "schule", "pause"].indexOf(h) > -1) setTab(h); });
+addEventListener("hashchange", function () {
+  var h = location.hash.replace("#", "");
+  if (["brief", "cal", "tasks", "schule", "pause"].indexOf(h) > -1) { if ($("panel").classList.contains("open")) closePanel(); setTab(h); }
+});
+// Lernzeit in der Schule beendet → Pause vorschlagen (kurze geplante Pausen, Albulescu et al. 2022)
+addEventListener("message", function (e) {
+  if (e.origin !== location.origin || !e.data || e.data.sg !== "study-done") return;
+  var m = e.data.min || 0, box = document.createElement("div");
+  box.className = "nudge";
+  box.innerHTML = "<span>" + (m ? m + " Min. gelernt – " : "") + "Zeit für eine kurze Pause. 5 Minuten wirken am besten.</span><button class='btn p' data-tab='pause'>Pause starten</button><button class='btn' data-nudge='x'>Später</button>";
+  document.body.appendChild(box);
+  box.addEventListener("click", function (ev) { if (ev.target.closest("button")) box.remove(); });
+  setTimeout(function () { box.remove(); }, 20000);
+});
 function renderTabbar() {
   var I = {
     brief: "<svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round'><circle cx='12' cy='12' r='4'/><path d='M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4'/></svg>",
@@ -1231,7 +1322,15 @@ $("panel").addEventListener("keydown", function (ev) {
 $("scrim").addEventListener("click", function () { if (S.edit) closePanel(); $("side").classList.remove("open"); $("scrim").classList.remove("on"); });
 
 /* ---------- Klicks in der Ansicht ---------- */
-function toggleTask(id) { if (EXT[id]) return showExt(EXT[id]); var t = findTask(id); if (t) C.tasks.update(id, { done: !t.done }); }
+function toggleHomework(id) {
+  var db = lpDb(); if (!db) return;
+  var h = (db.homework || []).find(function (x) { return "hw-" + x.id === id; }); if (!h) return;
+  h.done = !h.done; h.u = Date.now();
+  try { localStorage.setItem(LP_KEY, JSON.stringify(db)); } catch (e) { return; }
+  var fr = $("mods").querySelector("[data-mod='schule']"); if (fr) fr.contentWindow.location.reload();
+  C.sync(); render();
+}
+function toggleTask(id) { if (/^hw-/.test(id)) return toggleHomework(id); if (EXT[id]) return showExt(EXT[id]); var t = findTask(id); if (t) C.tasks.update(id, { done: !t.done }); }
 document.addEventListener("click", function (ev) {
   if (ev.target.closest("#panel, #pal")) return;
   if (dragState && dragState.didDrag) return;
@@ -1502,7 +1601,9 @@ addEventListener("storage", function (e) { if ((e.key === LP_KEY || e.key === "w
 addEventListener("sg-theme", function () { render(); });
 setInterval(function () { if (!document.hidden && !dragState) render(); }, 60000);
 var lastW = innerWidth;
-addEventListener("resize", function () { if ((lastW <= 760) !== (innerWidth <= 760)) { lastW = innerWidth; render(); } });
+// Drehen des Tablets/Handys: nach kurzer Pause neu zeichnen (Kopfzeile, Spalten, Ansichten passen sich an)
+var rsT = 0;
+addEventListener("resize", function () { if (innerWidth === lastW) return; clearTimeout(rsT); rsT = setTimeout(function () { lastW = innerWidth; if (!dragState) render(); }, 150); });
 var hashTab = location.hash.replace("#", "");
 if (["brief", "cal", "tasks", "schule", "pause"].indexOf(hashTab) > -1) S.tab = hashTab;
 render();
@@ -1542,7 +1643,10 @@ if ("serviceWorker" in navigator && location.protocol !== "file:") navigator.ser
    * Bewusst NICHT dabei: gerätebezogene Daten wie Zugangsschlüssel, Wetter-Cache oder Fensterstellungen
    * (Lernplan: schulplaner-lokal-v1, Trainingsblog: wk_sync, wk_syncmethod, wk_weather*, wk_uiprefs …). */
   var DATA = [
-    { id: "lernplan", name: "Schule (Lernplan)", keys: ["schulkalender-bayern-v1"] },
+    // Ist im Lernplan die eigene GitHub-Synchronisierung eingerichtet (sichert auch die Dateien der Ablage),
+    // überlässt der Verbund ihr die Schul-Daten – zwei Syncs auf denselben Daten würden sich überschreiben.
+    { id: "lernplan", name: "Schule (Lernplan)", keys: ["schulkalender-bayern-v1"], own: function () {
+      try { var l = JSON.parse(localStorage.getItem("schulplaner-lokal-v1") || "{}"); return !!(l.sync && l.sync.owner && l.sync.repo && l.sync.token); } catch (e) { return false; } } },
     { id: "denkpause", name: "Pause (Denkpause)", keys: ["denkpause.v1"] },
     { id: "training", name: "Training", keys: ["wk_settings", "wk_log", "wk_activities", "wk_runs", "wk_body", "wk_colors", "wk_custom_ex", "wk_custom_gym", "wk_freezes", "wk_gymlog", "wk_illness_active", "wk_injury_active", "wk_injurydays", "wk_onboarded", "wk_race", "wk_rests", "wk_sections", "wk_sickdays", "wk_skin", "wk_swaps", "wk_trainedoverride", "wk_vacation", "wk_weekgoal", "wk_widgets"] },
     { id: "rodeln", name: "Mobility", keys: ["rodelmobility.v1"] },
@@ -1818,7 +1922,7 @@ if ("serviceWorker" in navigator && location.protocol !== "file:") navigator.ser
   var EXTRA = [{ id: "einstellungen", name: "Einstellungen", keys: ["sg-design"], lww: true }];
   function syncApps(g, files) {
     DATA.concat(EXTRA).forEach(function (app) {
-      if (!app.keys.length) return;
+      if (!app.keys.length || (app.own && app.own())) return;
       var local = snapshot(app), h = hash(local), m = meta()[app.id] || {};
       var remote = readJSON(g.files && g.files["app-" + app.id + ".json"]);
       var localChanged = h !== m.hash && Object.keys(local).length > 0;
