@@ -64,6 +64,15 @@ button { cursor: pointer; }
 .mg button.inr { background: var(--s2); border-radius: 0; }
 .mg button.t { background: var(--now); color: #fff; border-radius: 50%; font-weight: 700; }
 .mg button.has::after { content: ""; position: absolute; left: 50%; bottom: 2px; width: 3px; height: 3px; margin-left: -1.5px; border-radius: 50%; background: var(--muted); }
+.wpstrip { flex: none; display: flex; align-items: center; gap: 12px; margin: 8px 12px 4px; padding: 9px 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--s1); }
+.wpstrip.ok { border-color: color-mix(in srgb, var(--acc) 45%, var(--line)); }
+.wpstrip .wpi { width: 32px; height: 32px; border-radius: 9px; background: var(--s2); display: flex; align-items: center; justify-content: center; font-size: 16px; flex: none; }
+.wpstrip.ok .wpi { background: var(--acc); color: var(--accfg, #111); font-weight: 800; }
+.wpstrip .wpt { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.wpstrip .wpt b { font-size: 14px; } .wpstrip .wpt small { color: var(--muted); font-size: 12.5px; line-height: 1.3; }
+.wpstrip .btn { white-space: nowrap; }
+@media (max-width: 480px) { .wpstrip { margin: 6px 8px 2px; padding: 8px 10px; gap: 10px; } .wpstrip .wpx { display: none; } .wpstrip .wpi { width: 28px; height: 28px; } }
+.wprem { display: flex; gap: 6px; margin: 4px 0; flex-wrap: wrap; } .wprem select { flex: 1; min-width: 0; }
 .sh { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 600; margin: 0 0 6px; }
 .cals label, .opt { display: flex; align-items: center; gap: 9px; padding: 5px 4px; border-radius: 7px; font-size: 14px; cursor: pointer; }
 .cals label:hover, .opt:hover { background: var(--s2); }
@@ -632,19 +641,21 @@ function renderBar() {
   }
   if (S.tab === "brief") title = "Heute";
   else if (S.tab === "tasks") title = "Aufgaben";
-  else if (S.view === "m") { var d = parse(S.anchor); title = (innerWidth <= 400 ? MS : MON)[d.getMonth()] + " " + d.getFullYear(); }
+  else if (S.view === "m") { var d = parse(S.anchor); title = (innerWidth <= 480 ? MS : MON)[d.getMonth()] + " " + d.getFullYear(); }
   else if (S.view === "a") title = "Agenda";
   else {
     var a = parse(r[0]), b = parse(r[1]);
-    title = a.getMonth() === b.getMonth() ? (innerWidth <= 400 ? MS : MON)[a.getMonth()] + " " + a.getFullYear() : MS[a.getMonth()] + " – " + MS[b.getMonth()] + " " + b.getFullYear();
+    title = a.getMonth() === b.getMonth() ? (innerWidth <= 480 ? MS : MON)[a.getMonth()] + " " + a.getFullYear() : MS[a.getMonth()] + " – " + MS[b.getMonth()] + " " + b.getFullYear();
     if (S.view === "w") sub = "KW " + kw(r[0]);
   }
   var cal = S.tab === "cal";
   var h = "<button class='ib menu-btn' data-a='menu' aria-label='Menü'>☰</button><h1>" + esc(title) + (sub ? "<small>" + sub + "</small>" : "") + "</h1>";
   // Auf schmalen Handys blättert man per Wischen – Platz für den Titel
-  if (cal && innerWidth > 400) h += "<button class='ib' data-a='prev' aria-label='Zurück'>‹</button><button class='ib' data-a='next' aria-label='Weiter'>›</button>";
+  if (cal && innerWidth > 480) h += "<button class='ib' data-a='prev' aria-label='Zurück'>‹</button><button class='ib' data-a='next' aria-label='Weiter'>›</button>";
   h += "<span class='sp'></span>";
   if (cal) {
+    // Auf dem Handy steht „Woche planen“ in der Leiste über dem Kalender – die Kopfzeile bleibt frei
+    if (wpOn() && innerWidth > 600) h += "<button class='btn wpbtn' data-a='weekplan' title='Woche planen: Training, Mobility, Atmung, Lernen'>Woche planen</button>";
     h += "<button class='btn' data-a='today'>Heute</button>";
     var views = [["1", "Tag"], ["3", "3 Tage"], ["w", "Woche"], ["m", "Monat"], ["a", "Agenda"]];
     if (innerWidth <= 1000) h += "<select class='vsel' data-a='vsel' aria-label='Ansicht'>" + views.map(function (v) { return "<option value='" + v[0] + "'" + (S.view === v[0] ? " selected" : "") + ">" + v[1] + "</option>"; }).join("") + "</select>";
@@ -656,6 +667,33 @@ function renderBar() {
     h += "<button class='btn p desk' data-a='new'>Neu</button><button class='ib desk' data-a='palette' title='Suchen (Strg+K)' aria-label='Suchen'>⌕</button>";
   } else h += "<button class='ib' data-a='palette' aria-label='Suchen'>⌕</button>";
   $("bar").innerHTML = h;
+}
+
+/* ---------- Wochenplanung im großen Kalender ---------- */
+function wpOn() { return !!(C.weekPlanConfig && C.weekPlanConfig().on); }
+// Woche, die gerade angezeigt wird (im Monat: die Woche des gewählten Tags), frühestens diese Woche
+function wpWeek() { var m = monday(S.view === "m" ? S.anchor : range()[0]), t = monday(today()); return m < t ? t : m; }
+function wpStrip() {
+  if (!wpOn()) return "";
+  var m = wpWeek(), done = C.weekPlanned(m), n = 0;
+  if (done) { n = C.list().filter(function (e) { return e.wp === m; }).length; var pp = jsonKey("pulsplan.v1"); if (pp && pp.entries) n += pp.entries.filter(function (e) { return e.wp === m; }).length; }
+  return "<div class='wpstrip" + (done ? " ok" : "") + "'><span class='wpi'>" + (done ? "✓" : "🗓") + "</span><span class='wpt'><b>KW " + kw(m) + (m === monday(today()) ? " · diese Woche" : m === addDays(monday(today()), 7) ? " · nächste Woche" : "") + "</b>" +
+    "<small>" + (done ? "Geplant · " + n + " Einträge<span class='wpx'> aus der Wochenplanung</span>" : "Noch nicht geplant<span class='wpx'>: Training, Mobility, Atmung und Lernen in 2 Minuten</span>") + "</small></span>" +
+    "<button class='btn" + (done ? "" : " p") + "' data-a='weekplan'>" + (done ? "Neu planen" : "Woche planen") + "</button></div>";
+}
+function wpSideHTML() {
+  if (!C.weekPlanConfig) return "";
+  var w = C.weekPlanConfig();
+  var opt = function (key, label, on, extra) { return "<label class='opt'><input type='checkbox' data-wps='" + key + "'" + (extra || "") + (on ? " checked" : "") + "><span class='sw' style='--c:var(--acc)'></span>" + label + "</label>"; };
+  var h = "<div><p class='sh'>Wochenplanung</p>" + opt("on", "Wochenplanung aktiv", w.on);
+  if (w.on) {
+    h += "<div class='wprem'><select class='small' data-wps='remind' aria-label='Erinnerung'>" + [["", "Keine Erinnerung"], ["sa", "Erinnerung Sa-Abend"], ["so", "Erinnerung So-Abend"]].map(function (x) {
+      return "<option value='" + x[0] + "'" + (w.remind === x[0] ? " selected" : "") + ">" + x[1] + "</option>"; }).join("") + "</select>" +
+      (w.remind ? "<input class='small' type='time' data-wps='time' value='" + esc(w.time) + "' aria-label='Uhrzeit'>" : "") + "</div>";
+    h += opt("topic", "Fragen: Training & Laufen", w.topics.training, " data-t='training'") + opt("topic", "Fragen: Mobility & Atmung", w.topics.mobility, " data-t='mobility'") + opt("topic", "Fragen: Lernen & Prüfungen", w.topics.lernen, " data-t='lernen'");
+    h += "<button class='btn wide' data-a='weekplan' style='margin-top:6px;width:100%'>Woche planen</button>";
+  }
+  return h + "</div>";
 }
 
 /* ---------- Seitenleiste ---------- */
@@ -681,12 +719,12 @@ function renderSide() {
     return "<label><input type='checkbox' data-cal='" + esc(c.name) + "'" + (P.hidden[c.name] ? "" : " checked") + "><span class='sw' style='--c:" + tone(c.color) + "'></span>" + esc(c.name) + "</label>";
   }).join("") + "</div>";
   h += "<label class='opt' style='margin-top:6px'><input type='checkbox' data-a='showtasks'" + (P.showTasks ? " checked" : "") + "><span class='sw' style='--c:var(--muted)'></span>Aufgaben im Kalender</label></div>";
+  h += wpSideHTML();
   var open = tasksAll().filter(function (x) { return !x.done && x.due && x.due <= t; });
   h += "<div><p class='sh'>Heute fällig</p>" + (open.length ? open.slice(0, 6).map(taskRow).join("") : "<div class='empty'>Nichts fällig.</div>") + "</div>";
   var st = C.status();
   h += "<div class='foot'>" +
     "<button class='link syncline " + (st.connected ? (st.error ? "err" : "ok") : "") + "' data-a='sync'>" + (st.connected ? (st.error ? esc(st.error) : "Synchronisiert" + (st.busy ? " …" : "")) : "Nur auf diesem Gerät · Sync einrichten") + "</button>" +
-    "<button class='link' data-a='weekplan'>Woche planen</button>" +
     "<button class='link' data-a='apps'>Alle Apps</button>" +
     (window.SGInstall && !SGInstall.installed() ? "<button class='link' data-a='install'>Planer als App installieren</button>" : "") +
     "<button class='link desk-hint' data-a='help'>Tastenkürzel <span class='kbd'>?</span></button>" +
@@ -1118,6 +1156,7 @@ function render() {
   else if (S.view === "m") h = renderMonth();
   else if (S.view === "a") h = renderAgenda();
   else { var r = range(), days = []; for (var k = r[0]; k <= r[1]; k = addDays(k, 1)) days.push(k); h = renderGrid(days); }
+  if (S.tab === "cal" && S.view !== "a") h = wpStrip() + h;
   v.innerHTML = h;
   var nq = $("qa");
   if (nq) { nq.value = qaVal; if (qaFocus) nq.focus(); qaPreview(nq); }
@@ -1334,7 +1373,7 @@ document.addEventListener("click", function (ev) {
   else if (a === "palette") openPalette();
   else if (a === "sync") { closeSide(); C.open(null, "sync"); }
   else if (a === "apps") { closeSide(); C.open(null, "apps"); }
-  else if (a === "weekplan") { closeSide(); C.weekPlan(); }
+  else if (a === "weekplan") { closeSide(); C.weekPlan("", S.tab === "cal" ? wpWeek() : null); }
   else if (a === "install") { closeSide(); window.SGInstall && SGInstall.prompt(); }
   else if (a === "design") { closeSide(); C.open(null, "design"); }
   else if (a === "reloadmod") { var fr = $("mods").querySelector("[data-mod='" + S.tab + "']"); if (fr) fr.contentWindow.location.reload(); }
@@ -1349,6 +1388,11 @@ document.addEventListener("change", function (ev) {
   if (el.dataset.cal !== undefined) { if (el.checked) delete P.hidden[el.dataset.cal]; else P.hidden[el.dataset.cal] = 1; savePrefs(); render(); }
   else if (el.dataset.a === "vsel") setView(el.value);
   else if (el.dataset.a === "showtasks") { P.showTasks = el.checked; savePrefs(); render(); }
+  else if (el.dataset.wps) {
+    var w = C.weekPlanConfig(), k = el.dataset.wps;
+    if (k === "on") w.on = el.checked; else if (k === "remind") w.remind = el.value; else if (k === "time") w.time = el.value || "18:00"; else if (k === "topic") w.topics[el.dataset.t] = el.checked;
+    C.weekPlanSave(w); render();
+  }
   else if (el.dataset.a === "theme") { P.theme = el.value; savePrefs(); applyTheme(); render(); }
 });
 document.addEventListener("input", function (ev) { if (ev.target.id === "qa") qaPreview(ev.target); });
@@ -2207,7 +2251,7 @@ if ("serviceWorker" in navigator && location.protocol !== "file:") navigator.ser
     ".wdays{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin:8px 0 4px}",
     ".wd{border:1px solid var(--line);background:var(--s1);color:var(--fg);border-radius:10px;padding:8px 0 6px;font-size:14px;font-weight:600;cursor:pointer;display:flex;flex-direction:column;align-items:center;min-height:48px}",
     ".wd small{font-size:10.5px;font-weight:400;color:var(--mut);margin-top:1px}.wd.on{background:var(--acc);border-color:var(--acc);color:var(--accfg)}.wd.on small{color:var(--accfg);opacity:.8}.wd.past{opacity:.35}",
-    ".seg{display:grid;grid-template-columns:1fr 1fr;gap:8px}.seg button{border:1px solid var(--line);background:var(--s1);color:var(--fg);border-radius:10px;padding:10px;font-size:14px;font-weight:600;cursor:pointer;text-align:left}",
+    ".seg{display:grid;grid-template-columns:1fr 1fr;gap:8px}.seg.s3{grid-template-columns:1fr 1fr 1fr}.seg button{border:1px solid var(--line);background:var(--s1);color:var(--fg);border-radius:10px;padding:10px;font-size:14px;font-weight:600;cursor:pointer;text-align:left}",
     ".seg button small{display:block;font-weight:400;font-size:12px;color:var(--mut);margin-top:2px}.seg button.on{border-color:var(--acc);box-shadow:0 0 0 1px var(--acc)}",
     ".txt a{color:var(--acc)}.wpw .row{margin-top:2px}.wpw input[type=time],.wpw select{min-height:44px}",
     ".toast span{flex:1;min-width:180px}.toast button{border:0;border-radius:8px;padding:7px 10px;font-size:13px;font-weight:600;cursor:pointer;background:var(--bg);color:var(--fg)}"
@@ -2726,7 +2770,7 @@ if ("serviceWorker" in navigator && location.protocol !== "file:") navigator.ser
     out.planned = Object.assign({}, c.planned || {});
     return out;
   }
-  function wpSave(c) { try { localStorage.setItem(WP_KEY, JSON.stringify(c)); } catch (e) {} schedulePush(); }
+  function wpSave(c) { try { localStorage.setItem(WP_KEY, JSON.stringify(c)); } catch (e) {} schedulePush(); emit(); }
   function mondayOf(k) { var d = parse(k); d.setDate(d.getDate() - (d.getDay() + 6) % 7); return iso(d); }
   function kw(k) { var d = parse(k), t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())), n = t.getUTCDay() || 7; t.setUTCDate(t.getUTCDate() + 4 - n); return Math.ceil(((t - Date.UTC(t.getUTCFullYear(), 0, 1)) / 864e5 + 1) / 7); }
   function shortDate(k) { var d = parse(k); return d.getDate() + "." + (d.getMonth() + 1) + "."; }
@@ -2739,11 +2783,13 @@ if ("serviceWorker" in navigator && location.protocol !== "file:") navigator.ser
     s.push("done");
     return s;
   }
-  function openWeekPlan(view) {
+  function openWeekPlan(view, mon) {
     mount();
     var t = iso(new Date()), wd = (new Date().getDay() + 6) % 7;
     var c = wpCfg();
-    wp = { step: 0, mon: wd >= 4 ? plusDays(mondayOf(t), 7) : mondayOf(t), a: JSON.parse(JSON.stringify(c.last)), view: view || "", result: null };
+    if (mon) mon = mondayOf(mon);
+    if (mon && mon < mondayOf(t)) mon = null; // vergangene Wochen plant man nicht mehr
+    wp = { step: 0, mon: mon || (wd >= 4 ? plusDays(mondayOf(t), 7) : mondayOf(t)), a: JSON.parse(JSON.stringify(c.last)), view: view || "", result: null };
     wpRender();
   }
   function closeWeekPlan() { wp = null; wpRender(); }
@@ -2780,7 +2826,9 @@ if ("serviceWorker" in navigator && location.protocol !== "file:") navigator.ser
     if (st === "start") {
       var t = iso(new Date()), thisMon = mondayOf(t), nextMon = plusDays(thisMon, 7);
       h += "<p class='txt'>Ein paar kurze Fragen – danach steht alles direkt in deinem Kalender (Planer, Schule, Training und Atmung).</p>";
-      h += "<label>Welche Woche?</label><div class='seg'>" + [[thisMon, "Diese Woche"], [nextMon, "Nächste Woche"]].map(function (x) {
+      var opts = [[thisMon, "Diese Woche"], [nextMon, "Nächste Woche"]];
+      if (wp.mon !== thisMon && wp.mon !== nextMon) opts.push([wp.mon, "KW " + kw(wp.mon)]);
+      h += "<label>Welche Woche?</label><div class='seg" + (opts.length > 2 ? " s3" : "") + "'>" + opts.map(function (x) {
         return "<button type='button' data-mon='" + x[0] + "' class='" + (wp.mon === x[0] ? "on" : "") + "'>" + x[1] + "<small>KW " + kw(x[0]) + " · " + shortDate(x[0]) + "–" + shortDate(plusDays(x[0], 6)) + "</small></button>";
       }).join("") + "</div>";
       if (c.planned[wp.mon]) h += "<p class='cl'>Diese Woche ist schon geplant. Neu planen ersetzt die Einträge der letzten Planung – selbst angelegte Termine bleiben.</p>";
@@ -2969,7 +3017,8 @@ if ("serviceWorker" in navigator && location.protocol !== "file:") navigator.ser
     if (!fired[key] && notifyOk() && document.hidden) { fired[key] = Date.now(); try { localStorage.setItem(FIRED_KEY, JSON.stringify(fired)); } catch (e) {} show("Zeit für die Wochenplanung", "KW " + kw(mon) + " in 2 Minuten planen", key); }
   }
   if (!EMBED) { setInterval(renderWpToast, 60000); window.addEventListener("storage", function (e) { if (e.key === WP_KEY) renderWpToast(); }); }
-  api.weekPlan = function (view) { if (EMBED) { try { return window.top.SharedCalendar.weekPlan(view); } catch (e) {} } openWeekPlan(view); };
+  api.weekPlan = function (view, mon) { if (EMBED) { try { return window.top.SharedCalendar.weekPlan(view, mon); } catch (e) {} } openWeekPlan(view, mon); };
+  api.weekPlanned = function (mon) { return wpCfg().planned[mondayOf(mon)] || 0; };
   api.weekPlanConfig = wpCfg;
   api.weekPlanSave = function (c) { wpSave(c); renderWpToast(); };
   document.addEventListener("keydown", function (e) { if (e.key === "Escape" && wp) closeWeekPlan(); else if (e.key === "Escape" && state.open) close(); });
