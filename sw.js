@@ -1,6 +1,6 @@
 /* Planer Service Worker: macht Planer samt Schule und Pause offline nutzbar */
-const VERSION = 'planer-v1';
-const SHELL = ['./', './index.html', './schule/', './pause/', './manifest.json', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png'];
+const VERSION = 'planer-v2';
+const SHELL = ['./', './index.html', './schule/', './pause/', './manifest.json', './inter.woff2', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(VERSION).then(c => c.addAll(SHELL)).catch(() => {}).then(() => self.skipWaiting()));
