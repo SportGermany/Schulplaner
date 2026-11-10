@@ -1,0 +1,1043 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#2343b8">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<script>window.__PWA__=true</script>
+<style>:root{padding-top:env(safe-area-inset-top,0px)}body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}</style>
+<title>Englisch Crashkurs</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap">
+<style>
+/* Layout: Karteikasten-App. Handy = eine Spalte + Leiste unten; Tablet = Leiste links, Inhalt mittig. */
+:root{
+  --bg:#eef1f5; --surface:#ffffff; --surface-2:#f6f8fb; --line:#d8dee7; --ink:#18212d; --muted:#5b6778;
+  --accent:#2343b8; --accent-ink:#ffffff; --accent-soft:#e3e8fa;
+  --card-rule:#c9d6ee; --card-head:#d9534f;
+  --s-u:#7b8698; --s-n:#2f6fdf; --s-f:#c77d00; --s-p:#d0344a; --s-k:#1d8f55;
+  --s-n-soft:#e2ecfc; --s-f-soft:#fbefd6; --s-p-soft:#fbe1e5; --s-k-soft:#dcf2e6; --s-u-soft:#e9ecf1;
+  --ok:#1d8f55; --bad:#d0344a; --warn:#c77d00;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+  --r:14px; --nav-h:64px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0f141b; --surface:#18202b; --surface-2:#1e2834; --line:#2c3746; --ink:#e8edf4; --muted:#9aa7b8;
+  --accent:#8ea6ff; --accent-ink:#0f141b; --accent-soft:#232f4f;
+  --card-rule:#2a3a55; --card-head:#e0716d;
+  --s-u:#8e99aa; --s-n:#6c9cff; --s-f:#f0b03c; --s-p:#ff6b7d; --s-k:#4cc786;
+  --s-n-soft:#1c2a45; --s-f-soft:#342812; --s-p-soft:#3b1a22; --s-k-soft:#163225; --s-u-soft:#232b36;
+  --ok:#4cc786; --bad:#ff6b7d; --warn:#f0b03c; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0f141b; --surface:#18202b; --surface-2:#1e2834; --line:#2c3746; --ink:#e8edf4; --muted:#9aa7b8;
+  --accent:#8ea6ff; --accent-ink:#0f141b; --accent-soft:#232f4f;
+  --card-rule:#2a3a55; --card-head:#e0716d;
+  --s-u:#8e99aa; --s-n:#6c9cff; --s-f:#f0b03c; --s-p:#ff6b7d; --s-k:#4cc786;
+  --s-n-soft:#1c2a45; --s-f-soft:#342812; --s-p-soft:#3b1a22; --s-k-soft:#163225; --s-u-soft:#232b36;
+  --ok:#4cc786; --bad:#ff6b7d; --warn:#f0b03c; color-scheme:dark;
+}
+[hidden]{display:none!important}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 var(--f-body);
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));
+  padding-block:0 calc(var(--nav-h) + 24px + env(safe-area-inset-bottom, 0px));}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:1.6rem;font-weight:800;letter-spacing:-.01em}
+h2{font-size:1.3rem;font-weight:800}
+h3{font-size:1.05rem;font-weight:600}
+p{margin:0}
+.wrap{max-width:880px;margin:0 auto;display:flex;flex-direction:column;gap:20px;padding-top:16px}
+.top{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.eyebrow{font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.count{display:flex;align-items:baseline;gap:6px;font-variant-numeric:tabular-nums}
+.count b{font-family:var(--f-display);font-size:1.8rem;font-weight:800;color:var(--accent)}
+.muted{color:var(--muted)}
+.small{font-size:.875rem}
+
+/* Navigation */
+nav.bar{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--surface);border-top:1px solid var(--line);
+  display:grid;grid-template-columns:repeat(6,1fr);
+  padding:6px max(8px, env(safe-area-inset-right, 0px)) calc(6px + env(safe-area-inset-bottom, 0px)) max(8px, env(safe-area-inset-left, 0px))}
+nav.bar button{border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px;border-radius:10px;color:var(--muted);font-size:.7rem;font-weight:700;min-width:0}
+nav.bar button svg{width:24px;height:24px}
+nav.bar button[aria-current="page"]{color:var(--accent);background:var(--accent-soft)}
+@media (min-width:900px){
+  body{padding-bottom:32px;padding-left:max(120px, calc(env(safe-area-inset-left, 0px) + 104px))}
+  nav.bar{top:0;bottom:0;right:auto;width:96px;grid-template-columns:1fr;grid-auto-rows:min-content;align-content:center;gap:6px;border-top:0;border-right:1px solid var(--line);
+    padding:calc(16px + env(safe-area-inset-top, 0px)) 8px 16px max(8px, env(safe-area-inset-left, 0px))}
+  nav.bar button{font-size:.75rem;padding:10px 4px}
+  nav.bar button svg{width:26px;height:26px}
+}
+
+/* Bausteine */
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.seg{display:flex;gap:4px;background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:4px;flex-wrap:wrap}
+.seg button{flex:1 1 auto;border:0;background:none;border-radius:9px;padding:8px 10px;font-weight:700;font-size:.9rem;color:var(--muted);white-space:nowrap}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:10px 16px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.ok{background:var(--ok);border-color:var(--ok);color:#fff}
+.btn.bad{background:var(--bad);border-color:var(--bad);color:#fff}
+.btn.ghost{background:none}
+.btn.big{min-height:56px;font-size:1.05rem;flex:1}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:.75rem;font-weight:700;letter-spacing:.03em;padding:3px 9px;border-radius:99px;background:var(--surface-2);border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.chip.m{background:var(--accent-soft);border-color:transparent;color:var(--accent)}
+input[type=text],textarea{width:100%;border:1.5px solid var(--line);background:var(--surface);border-radius:10px;padding:10px 12px;min-height:44px}
+input[type=text]:focus,textarea:focus{border-color:var(--accent);outline:none}
+textarea{min-height:90px;resize:vertical}
+mark{background:color-mix(in srgb, var(--s-f) 28%, transparent);color:inherit;border-radius:3px;padding:0 2px}
+.gap{display:inline-block;min-width:4.5em;border-bottom:2px solid var(--ink);margin:0 2px}
+
+/* Plan */
+.progress{height:10px;border-radius:99px;background:var(--surface-2);border:1px solid var(--line);overflow:hidden}
+.progress i{display:block;height:100%;background:var(--accent);border-radius:99px;transition:width .3s}
+.day{display:flex;flex-direction:column;gap:10px}
+.dayhead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.step{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px}
+.step.done{background:var(--surface-2)}
+.step.done .st-title{text-decoration:line-through;color:var(--muted)}
+.tick{width:30px;height:30px;border-radius:9px;border:2px solid var(--line);background:var(--surface);display:grid;place-items:center;padding:0}
+.tick svg{width:18px;height:18px;opacity:0}
+.step.done .tick{background:var(--ok);border-color:var(--ok);color:#fff}
+.step.done .tick svg{opacity:1}
+.st-body{display:flex;flex-direction:column;gap:6px;min-width:0}
+.st-meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.st-title{font-weight:700;font-size:1.02rem}
+.note{border-left:4px solid var(--s-f);background:var(--s-f-soft);padding:12px 14px;border-radius:0 10px 10px 0}
+
+/* Stapel */
+.stacks{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+@media (max-width:560px){.stacks{grid-template-columns:repeat(3,1fr)}}
+.stack{border:1px solid var(--line);border-radius:12px;padding:10px 8px;display:flex;flex-direction:column;align-items:flex-start;gap:2px;background:var(--surface);text-align:left;min-width:0;position:relative;overflow:hidden}
+.stack::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--c)}
+.stack b{font-family:var(--f-display);font-size:1.6rem;font-weight:800;color:var(--c);font-variant-numeric:tabular-nums;padding-left:6px}
+.stack span{font-size:.75rem;font-weight:700;color:var(--muted);padding-left:6px;line-height:1.2}
+.stack[disabled]{opacity:.55;cursor:default}
+
+/* Karteikarte */
+.kcard{position:relative;background:var(--surface);border-radius:16px;border:1px solid var(--line);box-shadow:0 10px 28px -14px rgba(10,20,40,.35);
+  background-image:repeating-linear-gradient(to bottom, transparent 0 31px, var(--card-rule) 31px 32px);background-position:0 58px;
+  padding:20px 20px 18px;min-height:280px;display:flex;flex-direction:column;gap:14px}
+.kcard::before{content:"";position:absolute;left:0;right:0;top:56px;height:2px;background:var(--card-head);opacity:.7}
+.kc-top{display:flex;justify-content:space-between;gap:8px;align-items:center;min-height:24px}
+.kc-q{font-family:var(--f-display);font-weight:800;font-size:clamp(1.5rem, 5vw, 2.2rem);line-height:1.15;margin-top:12px;overflow-wrap:anywhere}
+.kc-ex{font-size:1.08rem;line-height:32px;background:var(--surface);padding:0 4px;border-radius:6px;align-self:flex-start}
+.kc-a{display:flex;flex-direction:column;gap:6px;background:var(--surface);border-radius:10px;padding:10px 12px;border:1px dashed var(--line)}
+.kc-a .en{font-family:var(--f-display);font-weight:800;font-size:1.5rem;color:var(--accent);overflow-wrap:anywhere}
+.kc-info{font-size:.9rem;color:var(--muted)}
+.stackdot{display:inline-flex;align-items:center;gap:6px;font-size:.75rem;font-weight:700;color:var(--muted)}
+.stackdot i{width:10px;height:10px;border-radius:50%;background:var(--c)}
+.res{font-weight:700;padding:8px 12px;border-radius:10px}
+.res.ok{background:var(--s-k-soft);color:var(--ok)} .res.bad{background:var(--s-p-soft);color:var(--bad)} .res.warn{background:var(--s-f-soft);color:var(--warn)}
+.calm{background:#141a2a;color:#e7e9f5;border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:14px}
+.calm .kcard{background-color:#1c2336;border-color:#2c3550;color:#e7e9f5;background-image:repeating-linear-gradient(to bottom, transparent 0 31px, #263049 31px 32px)}
+.calm .kc-ex,.calm .kc-a{background:#1c2336}
+.calm .kc-a .en{color:#a9b8ff}
+.calm .muted,.calm .kc-info{color:#a6adc8}
+
+/* Grammatik & Übungen */
+.rule{display:flex;flex-direction:column;gap:8px}
+.rule ul{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:4px}
+.pattern{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--surface-2)}
+.pattern .n{font-family:var(--f-display);font-weight:800;color:var(--accent);font-size:1.3rem;line-height:1}
+.pattern .de{font-weight:700}
+.pattern .en{font-size:1.05rem}
+.ex{display:flex;flex-direction:column;gap:8px;padding:12px 0;border-top:1px solid var(--line)}
+.ex:first-child{border-top:0}
+.ex .q{font-size:1.02rem}
+.ex .fb{font-size:.92rem}
+.ex.ok input{border-color:var(--ok)} .ex.bad input{border-color:var(--bad)}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
+table{border-collapse:collapse;width:100%;font-size:.92rem;min-width:560px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--surface-2);font-size:.75rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+tr:last-child td{border-bottom:0}
+.pairs{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px}
+.pair{border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--surface);font-size:.95rem}
+.pair b{font-weight:700}
+.trap{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;padding:12px 0;border-top:1px solid var(--line)}
+.trap:first-child{border-top:0}
+.trap.done .tt{color:var(--muted)}
+.log{border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:4px;background:var(--surface)}
+.log.solved{opacity:.6}
+.log .wrong{color:var(--bad);text-decoration:line-through}
+.log .right{color:var(--ok);font-weight:700}
+.grade{font-family:var(--f-display);font-weight:800;font-size:3rem;color:var(--accent);line-height:1}
+.list{display:flex;flex-direction:column}
+.li{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;padding:8px 0;border-top:1px solid var(--line);align-items:center;font-size:.95rem}
+.li:first-child{border-top:0}
+.li > *{min-width:0;overflow-wrap:anywhere}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(var(--nav-h) + 20px + env(safe-area-inset-bottom, 0px));background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;font-weight:700;z-index:30;max-width:calc(100% - 32px)}
+@media (min-width:900px){.toast{bottom:24px}}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+</head>
+<body>
+<nav class="bar" id="nav" aria-label="Bereiche"></nav>
+<main class="wrap" id="main"></main>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+/* ================== DATEN ================== */
+// [englisch, deutsch, Mini-Context-Satz mit [Zielwort], Info/Wortfamilie]
+const U1 = [
+["explore","erforschen, erkunden","Let's go for a walk and [explore] the village.","explorer (Entdecker/in), exploration"],
+["parrot","Papagei","The [parrot] in the tree was bright green and red."],
+["kangaroo","Känguru","We saw a [kangaroo] jumping across the road."],
+["crocodile","Krokodil","Don't swim here – there's a [crocodile] in the river!","Betonung: CROcodile"],
+["Tasmanian devil","Beutelteufel","The [Tasmanian devil] only lives on the island of Tasmania.","devil = Teufel"],
+["camel","Kamel","You can ride a [camel] through the desert.","Betonung: CAmel"],
+["outback","das Hinterland Australiens","Australia's [outback] is far away from the coast and the towns.","the outback"],
+["bite","beißen; stechen","Careful! That dog [bites].","bite – bit – bitten · Nomen: a bite (Biss, Stich)"],
+["insect repellent","Insektenschutzmittel","Put on some [insect repellent], or the mosquitoes will bite you.","insect = Insekt · repellent = Schutzmittel"],
+["continent","Kontinent","Europe, Africa and Asia are [continents].","Betonung: CONtinent"],
+["convict","Sträfling","Many of the first Europeans in Australia were [convicts] from British prisons.","= somebody who has been sent to prison"],
+["scuba-diving","Sporttauchen","[Scuba-diving] at the reef was the best part of our trip."],
+["snorkelling","Schnorcheln","For [snorkelling] you only need a mask and fins."],
+["coral reef","Korallenriff","The Great Barrier Reef is the biggest [coral reef] in the world.","coral = Koralle · reef = Riff"],
+["testimony","Aussage; Beweis, Zeugnis","Thousands of happy customers are [testimony] to the quality of our products."],
+["identify","erkennen; identifizieren","Can you [identify] the man who attacked you?","identity, identification · identify yourself = sich zu erkennen geben"],
+["Aboriginal","Aborigine-, die Ureinwohner Australiens betreffend","She loves [Aboriginal] art and culture.","an Aboriginal Australian"],
+["people","Menschen; Volk","A lot of [people] are afraid of dogs.","people = Menschen (Plural!) · peoples = Völker"],
+["dream of","träumen von","I [dream of] sailing around the world.","dream of + -ing · Nomen: a dream"],
+["plant","Pflanze; pflanzen","This [plant] needs a lot of water.","Nomen = Verb: to plant a tree"],
+["pass on","weitergeben","The stories were [passed on] from one generation to the next.","pass sth. on to sb. · pass sth. down = überliefern"],
+["present","Gegenwart; Geschenk","Forget the past – live in the [present]!","the past – the present – the future"],
+["fellow","Mit-","Say hello to your [fellow] students.","fellow passengers = Mitreisende"],
+["integrate","(sich) integrieren","It isn't always easy to [integrate] into a new country.","Nomen: integration · Betonung: INtegrate"],
+["community","Gemeinschaft, Gemeinde","Bayern Munich has a big [community] of fans all over Europe."],
+["bring up","aufziehen, großziehen","She was born and [brought up] in London.","bring – brought – brought"],
+["generation","Generation","Three [generations] live in this house.","Betonung: geneRAtion"],
+["apologize","sich entschuldigen","You should [apologize] to her for saying such nasty things.","apologize to sb. for doing sth. · Nomen: apology"],
+["suffer from","leiden an","I often [suffer from] headaches.","Nomen: suffering (Leid)"],
+["hurt","Schmerz; Kränkung; verletzen","Words can cause a lot of [hurt].","hurt – hurt – hurt"],
+["break up","zerbrechen; auflösen; sich trennen","She [broke up] with her boyfriend.","break – broke – broken"],
+["indignity","Demütigung, Erniedrigung","Aboriginal people had to suffer many [indignities] for years."],
+["inflict","zufügen","War [inflicts] pain on many innocent people.","inflict sth. on sb."],
+["proud of","stolz auf","My parents are [proud of] me.","Nomen: pride · Adverb: proudly"],
+["prime minister","Premierminister/in","The British [prime minister] lives at 10 Downing Street.","Betonung: prime MInister"],
+["welfare","Sozialhilfe; Wohl(ergehen)","He doesn't have a job and lives on [welfare]."],
+["separate","trennen","It's not right to [separate] children from their parents.","Verb [ˈsepəreɪt] · Adjektiv separate [ˈseprət] = getrennt · separately"],
+["nursery","Kinderzimmer; Kinderkrippe","My little brother goes to a [nursery] near our house."],
+["cut out","mit etwas aufhören (ugs.)","You should [cut out] sweets for a while.","= stop doing sth."],
+["life expectancy","Lebenserwartung","[Life expectancy] in Japan is very high."],
+["unemployment","Arbeitslosigkeit","[Unemployment] is a big problem in some regions.","employment ◄► unemployment · unemployed, employer, employee"],
+["canvas","Leinwand","The artist painted the picture on [canvas]."],
+["bark","Baumrinde","Some Aboriginal artists paint on tree [bark]."],
+["back then","damals","My grandma was born in 1952. Life was slower [back then].","then = 1. dann 2. damals"],
+["encourage","ermutigen","My friends [encouraged] me to apply for the job.","Nomen: encouragement ◄► discourage"],
+["permanent","dauerhaft, fest","After school I got my first [permanent] job.","◄► temporary · permanently"],
+["dot","Punkt, Pünktchen","This painting is made of thousands of tiny [dots].","dot painting = Punktmalerei"],
+["bright","hell; leuchtend","I like [bright] colours like orange and yellow.","◄► dark · brightness, brightly"],
+["use","Gebrauch, Verwendung","This old phone is of no [use] to me.","Nomen [juːs] · Verb [juːz] · useful ◄► useless"],
+["in progress","im Gange","Quiet please! Recording [in progress]!","to be in progress = im Gange sein"],
+["regular","regelmäßig; normal","Is ‘arrive’ a [regular] verb?","◄► irregular · regularly"],
+["come of age","volljährig werden","In Germany you [come of age] when you turn 18.","= become an adult by law"],
+["confirm","bestätigen; konfirmieren","Please [confirm] your booking by email.","Nomen: confirmation"],
+["Jewish","jüdisch","Hanukkah is a [Jewish] festival.","Nomen: Jew"],
+["Muslim","Muslim/a; muslimisch","Ramadan is an important month for [Muslims]."],
+["ceremony","Feier, Zeremonie","The wedding [ceremony] took place in a small church.","Betonung: CEremony"],
+["discipline","Disziplin","You need a lot of [discipline] to learn every day.","Nomen = Verb · Betonung: DIScipline"],
+["used to","früher (immer) …","I [used to] do a lot of sport, but I don't have the time now.","didn't use to · Did you use to …?"],
+["mark","Markierung; Zeichen; markieren","Put a [mark] next to the words you don't know.","Nomen = Verb"],
+["return","zurückkehren; Rückkehr","We [returned] home after six weeks in Australia.","Nomen = Verb"],
+["venom","Gift (von Tieren)","Some snakes have very strong [venom].","venomous = giftig · antivenom = Gegengift"],
+["creature","Geschöpf, Lebewesen","The octopus is a strange sea [creature].","Betonung: CREAture"],
+["snail","Schnecke","A [snail] carries its house on its back."],
+["backyard","Hinterhof; Garten (AE)","The kids are playing in the [backyard].","AE backyard = BE garden"],
+["anti-","Anti-, Gegen-","Doctors gave him an [anti]venom after the snake bite.","anti-discrimination laws"],
+["jellyfish","Qualle","Don't touch the [jellyfish] – it can sting you!","Plural: jellyfish"],
+["sting","Stich; stechen","A bee [stung] me on the arm.","sting – stung – stung"],
+["immediately","sofort","When I call my dog, she comes [immediately].","Adjektiv: immediate"],
+["vinegar","Essig","Here's some oil and [vinegar] for your salad."],
+["octopus","Oktopus","An [octopus] has eight arms.","Plural: octopuses"],
+["paralysis","Lähmung","She uses a wheelchair because of a [paralysis] in her legs.","Plural: paralyses"],
+["tick","Zecke","After the walk I found a [tick] on my leg."],
+["oval","oval","The table in our kitchen is [oval].","Betonung: Oval"],
+["suck","saugen","Mosquitoes bite you and [suck] your blood."],
+["tweezers","Pinzette","You can remove a tick with [tweezers].","immer Plural"],
+["friendliness","Freundlichkeit","The [friendliness] of the Australians surprised me.","friend – friendly – friendliness – friendship ◄► unfriendly"],
+["informal","informell, locker","Your emails to friends can be [informal].","formal ◄► informal"],
+["shorten","(ver)kürzen","I need to [shorten] this text.","short – shorten – shortly"],
+["mate","Kumpel (ugs.)","Weekends are a good time to hang out with your [mates]."],
+["cheers","danke; tschüs (ugs.)","“Here's your drink.” – “[Cheers], mate!”"],
+["cereal","Frühstücksflocken; Getreide","I have [cereal] with milk for breakfast."],
+["detention","Haft; Nachsitzen","He got [detention] for being late three times.","detention centre = Auffanglager · Verb: detain"],
+["criticize","kritisieren","If you [criticize] my work, tell me how to do it better.","criticism, critic, critical · Betonung: CRItisize"],
+["drown","ertrinken","Never swim alone – you could [drown]."],
+["conflict","Konflikt, Streit","There was a [conflict] between the two groups.","Betonung: CONflict"],
+["corner","Ecke","There's a statue in each [corner] of the square."],
+["policy","Richtlinie; Politik","There's a “no junk food” [policy] at my school."],
+["whatever","was auch immer","We will help you, [whatever] happens."],
+["illegal","illegal, verboten","It's [illegal] to drive without a licence.","◄► legal · il- vor l"],
+["forever","für immer, ewig","The accident changed her life [forever].","auch: for ever"],
+["difficulty","Schwierigkeit","She had [difficulty] finding the way.","Adjektiv: difficult"],
+["hut","Hütte","We spent the night in a small [hut] in the mountains."],
+["dry","trocknen; trocken","Can you [dry] the dishes, please?","Verb = Adjektiv · ◄► wet"],
+["expert","Experte, Expertin","She's an [expert] on Australian animals.","Betonung: EXpert"],
+["operation","Operation; Einsatz","The police started a secret [operation].","Verb: operate"],
+["get rid of","loswerden","I never drive any more. I should [get rid of] my car."],
+["textbook","Schulbuch","Open your [textbooks] at page 20."],
+["photocopy","fotokopieren; Fotokopie","Can you [photocopy] this page for me?"],
+["current affairs","aktuelle Ereignisse, Tagespolitik","We often talk about [current affairs] in our English lessons.","current = aktuell (nicht: actually!)"],
+["course","Kurs","I'm doing a crash [course] in English.","crash course = Intensivkurs"],
+["realize","erkennen, bemerken","When I got home, I [realized] that I had left my bag on the train.","Nomen: realization"],
+["council","Rat, Ausschuss","The town [council] wants to build a new park.","town council = Stadtrat"],
+["false","falsch","Is this sentence true or [false]?","◄► true"],
+["long-term","langfristig","Learning a little every day is a good [long-term] plan.","◄► short-term · medium-term"],
+["recommend","empfehlen","We [recommend] that you go by train.","recommend sth. · recommend doing · recommend that you do"],
+["authority","Behörde","The local [authority] is responsible for the schools.","local authority = Gemeinde(behörde)"],
+["a while","eine Weile","Let's wait for [a while].","while = während"],
+["soak up","aufsaugen, aufnehmen","Young children [soak up] everything they hear."],
+["squint","blinzeln, Augen zusammenkneifen","The sun was so bright that I had to [squint]."],
+["campaign","Kampagne; sich einsetzen","We started a [campaign] against the new factory.","campaign for/against"],
+["Lord Mayor","Oberbürgermeister/in","The [Lord Mayor] of London opened the festival."],
+["a mate of mine","ein Freund von mir","Jack is [a mate of mine].","a friend of mine/his/hers – nicht: of me/him/her!"],
+["deny","leugnen, bestreiten","He [denied] having committed the crime.","deny + -ing · Nomen: denial"],
+["ignore","ignorieren, nicht beachten","They [ignored] all the safety signs.","Nomen: ignorance · ignorant"],
+["accent","Akzent","Duncan is from Glasgow and speaks with a strong Scottish [accent].","Betonung: Accent"],
+["riddle","Rätsel","These [riddles] are really difficult to solve."],
+["direct","direkt","Is there a [direct] train to Sydney?","◄► indirect · directly"],
+["plains","Ebene","Huge [plains] stretch across the middle of the country.","immer Plural"],
+["bear","ertragen, aushalten","I can't [bear] this pain much longer.","bear – bore – borne"],
+["perfect","perfekt","Your English is [perfect]!","perfectly still = völlig ruhig · Betonung: PERfect"],
+["calm","ruhig; beruhigen","Please stay [calm] and listen.","calm down = sich beruhigen"],
+["point of view","Standpunkt, Meinung","From my [point of view], the plan is great.","= opinion"],
+["tournament","Turnier","Our team won the football [tournament]."],
+["congratulations","Glückwunsch","[Congratulations] on your good grades!","congratulations ON sth. · congratulate sb. on sth."],
+["anyway","trotzdem; sowieso","It's cold and rainy, but I'll go by bike [anyway]."],
+["collocation","Kollokation","“Heavy rain” is a typical [collocation]."],
+["athletics","Leichtathletik","Running, jumping and throwing are part of [athletics]."],
+["amateur","Amateur/in","He isn't a professional – he's an [amateur].","◄► professional · Betonung: Amateur"],
+["venue","Veranstaltungsort","The [venue] for the concert is the new stadium."],
+["antonym","Antonym, Gegenteil","“Easy” is an [antonym] of “difficult”.","synonym ◄► antonym"],
+["idiom","Redewendung","“That's not my cup of tea” is an English [idiom]."],
+["it's your turn","du bist dran","I've asked my question. Now [it's your turn]."],
+["explanation","Erklärung","Thanks for your [explanation] – now I understand.","Verb: explain"],
+["spectator","Zuschauer/in","Thousands of [spectators] watched the match."],
+["goalpost","Torpfosten","The ball hit the [goalpost]."]
+];
+
+const GWS = [
+["achieve","erreichen, schaffen","She [achieved] her goal and won the race.","achievement"],
+["afford","sich leisten","I can't [afford] a new phone."],
+["avoid","vermeiden","Try to [avoid] making the same mistakes.","avoid + -ing"],
+["borrow","(sich) ausleihen","Can I [borrow] your pen?","borrow FROM sb. ◄► lend TO sb."],
+["lend","(ver)leihen","Can you [lend] me five euros?","lend – lent – lent"],
+["compare","vergleichen","Don't [compare] yourself with others.","comparison"],
+["complain","sich beschweren","My neighbours always [complain] about the noise.","complaint · complain about"],
+["decide","(sich) entscheiden","I can't [decide] what to wear.","decision"],
+["describe","beschreiben","Can you [describe] the man?","description"],
+["develop","entwickeln","Scientists [developed] a new medicine.","development"],
+["earn","verdienen","How much money do you [earn]?"],
+["expect","erwarten","I didn't [expect] such a good mark.","expectation · unexpected"],
+["fail","scheitern; durchfallen","If you don't learn, you'll [fail] the test.","failure ◄► succeed / pass"],
+["forgive","verzeihen","Please [forgive] me – I'm sorry.","forgive – forgave – forgiven"],
+["improve","verbessern","I want to [improve] my English.","improvement"],
+["include","einschließen","The price [includes] breakfast.","◄► exclude"],
+["increase","steigen; erhöhen","The number of tourists [increased] last year.","◄► decrease"],
+["manage","schaffen; leiten","Did you [manage] to finish your homework?","manager, management"],
+["mention","erwähnen","She didn't [mention] the problem."],
+["offer","anbieten; Angebot","Can I [offer] you a drink?"],
+["prepare","vorbereiten","I need to [prepare] for the test.","preparation"],
+["prevent","verhindern","Insect repellent [prevents] mosquito bites.","prevention"],
+["protect","schützen","Sun cream [protects] your skin.","protection"],
+["prove","beweisen","Can you [prove] that?","proof = Beweis"],
+["refuse","sich weigern; ablehnen","He [refused] to say sorry.","◄► accept · refusal"],
+["remind","erinnern (jn. an etwas)","Please [remind] me to buy milk.","remind sb. to do / of sth. · remember = sich erinnern"],
+["replace","ersetzen","We need to [replace] the old windows."],
+["solve","lösen","Can you [solve] this riddle?","solution"],
+["succeed","Erfolg haben","If you work hard, you'll [succeed].","success, successful ◄► fail"],
+["threaten","drohen, bedrohen","He [threatened] to call the police.","threat"],
+["warn","warnen","The sign [warns] people about crocodiles.","warning"],
+["waste","verschwenden","Don't [waste] your time.","a waste of time"],
+["worry","sich Sorgen machen","Don't [worry] – everything will be fine.","worried · worry about"],
+["admit","zugeben","He [admitted] that he was wrong.","◄► deny"],
+["behave","sich benehmen","The kids [behaved] well at the party.","behaviour"],
+["care about","wichtig sein, sich kümmern um","I really [care about] the environment.","careful ◄► careless"],
+["advantage","Vorteil","One [advantage] of city life is the good public transport.","◄► disadvantage"],
+["advice","Rat(schlag)","Can you give me some [advice]?","nur Singular! a piece of advice · Verb: advise"],
+["choice","Wahl","You have no [choice].","Verb: choose"],
+["environment","Umwelt","We must protect the [environment].","environmental"],
+["experience","Erfahrung; Erlebnis","Living abroad was a great [experience]."],
+["government","Regierung","The [government] wants to build more schools.","govern"],
+["health","Gesundheit","Smoking is bad for your [health].","healthy ◄► unhealthy"],
+["knowledge","Wissen","Reading improves your [knowledge].","know – known"],
+["opportunity","Gelegenheit, Chance","This job is a great [opportunity] for you."],
+["opinion","Meinung","In my [opinion], school should start later.","= point of view"],
+["pollution","Umweltverschmutzung","Air [pollution] is a big problem in big cities.","pollute, polluted"],
+["reason","Grund","What's the [reason] for your decision?"],
+["relationship","Beziehung","They have a good [relationship]."],
+["responsibility","Verantwortung","Parents have a lot of [responsibility].","responsible ◄► irresponsible"],
+["solution","Lösung","We need a [solution] to this problem.","solve"],
+["success","Erfolg","The concert was a big [success].","succeed, successful"],
+["behaviour","Verhalten","His [behaviour] in class was terrible.","behave · AE behavior"],
+["skill","Fähigkeit","Speaking English is an important [skill]."],
+["goal","Ziel; Tor","My [goal] is to get a good mark."],
+["afraid of","Angst haben vor","Many people are [afraid of] spiders.","= scared of"],
+["available","verfügbar, erhältlich","Tickets are [available] online."],
+["aware of","bewusst","Are you [aware of] the danger?"],
+["brave","mutig","It was very [brave] of you to help him.","◄► cowardly"],
+["common","häufig, verbreitet","Smith is a [common] name in England.","◄► rare"],
+["dangerous","gefährlich","Crocodiles are [dangerous] animals.","danger ◄► safe"],
+["similar","ähnlich","My sister and I have [similar] hobbies.","◄► different"],
+["empty","leer","The fridge is [empty] – let's go shopping.","◄► full"],
+["famous","berühmt","Sydney is [famous] for its Opera House."],
+["fair","gerecht, fair","That's not [fair]!","◄► unfair"],
+["guilty","schuldig","The judge said he was [guilty].","◄► innocent"],
+["honest","ehrlich","Please be [honest] with me.","honesty ◄► dishonest"],
+["lonely","einsam","She felt [lonely] in her new town.","loneliness"],
+["polite","höflich","It's [polite] to say please.","◄► rude / impolite"],
+["rude","unhöflich","Don't be so [rude]!","◄► polite"],
+["serious","ernst(haft)","This is a [serious] problem.","seriously"],
+["strict","streng","Our teacher is very [strict]."],
+["useful","nützlich","A map is [useful] in the outback.","◄► useless"],
+["worried","besorgt","My mum was [worried] about me.","worry"],
+["wealthy","reich, wohlhabend","He comes from a [wealthy] family.","= rich ◄► poor"],
+["ancient","uralt, antik","Aboriginal culture is [ancient] – it's over 60,000 years old.","◄► modern"],
+["huge","riesig","Australia is a [huge] country.","= enormous ◄► tiny"],
+["although","obwohl","[Although] it was raining, we went to the beach.","= though"],
+["however","jedoch","The trip was expensive. [However], it was great."],
+["therefore","deshalb","It was late. [Therefore], we took a taxi.","= so"],
+["instead of","statt","Let's walk [instead of] taking the bus.","instead of + -ing"],
+["especially","besonders","I love animals, [especially] kangaroos."],
+["probably","wahrscheinlich","It will [probably] rain tomorrow.","probable"],
+["suddenly","plötzlich","[Suddenly], a snake appeared.","sudden"],
+["nearly","fast, beinahe","I [nearly] missed the bus.","= almost"],
+["unless","außer wenn, es sei denn","You won't pass [unless] you learn.","= if … not"],
+["despite","trotz","We went out [despite] the rain.","= in spite of"],
+["actually","eigentlich, tatsächlich","[Actually], I don't like pizza.","Falscher Freund! aktuell = current"],
+["at least","mindestens; wenigstens","The flight takes [at least] twenty hours."],
+["on purpose","absichtlich","He didn't do it [on purpose].","◄► by accident"],
+["by accident","aus Versehen","I deleted the file [by accident].","◄► on purpose"],
+["get used to","sich gewöhnen an","I can't [get used to] driving on the left.","get used to + -ing"],
+["look forward to","sich freuen auf","I'm [looking forward to] the holidays.","look forward to + -ing!"],
+["take part in","teilnehmen an","Ten teams [took part in] the tournament."],
+["give up","aufgeben","Don't [give up] – you can do it!"],
+["find out","herausfinden","I want to [find out] more about Australia."],
+["deal with","umgehen mit, sich befassen mit","How do you [deal with] stress?"],
+["depend on","abhängen von","It [depends on] the weather."],
+["apply for","sich bewerben um","She [applied for] a job in Sydney.","application"],
+["be supposed to","sollen","You're [supposed to] be in bed!"],
+["make sure","sicherstellen","[Make sure] you have your passport."],
+["journey","Reise, Fahrt","The [journey] from Sydney to Perth takes four days by train.","= trip"],
+["immigrant","Einwanderer/Einwanderin","Many [immigrants] came to Australia after 1945.","immigrate, immigration"],
+["native","einheimisch","Kangaroos are [native] to Australia.","native speaker = Muttersprachler/in"],
+["border","Grenze","We crossed the [border] into Austria."],
+["temperature","Temperatur","The [temperature] in the outback can reach 45 degrees."],
+["drought","Dürre","There was no rain for months – a terrible [drought].","Aussprache [draʊt]"],
+["bushfire","Buschfeuer","[Bushfires] destroy huge areas of land every summer."],
+["wildlife","Tierwelt","Australia's [wildlife] is unique.","unique = einzigartig"],
+["equipment","Ausrüstung","You need special [equipment] for scuba-diving.","nur Singular!"],
+["shortage","Mangel","There's a [shortage] of water in the outback."]
+];
+
+// Wortfamilien: [Verb, Nomen, Adjektiv, Adverb, Gegenteil]
+const FAM = [
+["explain","explanation","—","—","—"],
+["explore","exploration, explorer","—","—","—"],
+["identify","identity, identification","—","—","—"],
+["integrate","integration","integrated","—","—"],
+["apologize","apology","—","—","—"],
+["suffer","suffering","—","—","—"],
+["—","pride","proud","proudly","ashamed"],
+["separate","separation","separate","separately","together"],
+["employ","employment, employer, employee","employed","—","unemployment, unemployed"],
+["encourage","encouragement","encouraging","—","discourage"],
+["—","—","permanent","permanently","temporary"],
+["brighten","brightness","bright","brightly","dark"],
+["use","use, user","useful","usefully","useless"],
+["—","—","regular","regularly","irregular"],
+["confirm","confirmation","—","—","—"],
+["—","venom","venomous","—","—"],
+["—","poison","poisonous","—","—"],
+["—","—","immediate","immediately","—"],
+["—","friend, friendship, friendliness","friendly","—","unfriendly"],
+["—","—","formal","formally","informal"],
+["shorten","—","short","shortly","long"],
+["detain","detention","—","—","—"],
+["criticize","criticism, critic","critical","critically","—"],
+["—","—","legal","legally","illegal"],
+["—","difficulty","difficult","—","easy"],
+["operate","operation, operator","—","—","—"],
+["realize","realization","—","—","—"],
+["deny","denial","—","—","admit"],
+["ignore","ignorance","ignorant","—","—"],
+["direct","direction","direct","directly","indirect"],
+["—","perfection","perfect","perfectly","imperfect"],
+["calm (down)","calm","calm","calmly","nervous"],
+["congratulate","congratulations","—","—","—"],
+["succeed","success","successful","successfully","unsuccessful, fail"],
+["decide","decision","decisive","—","—"],
+["improve","improvement","—","—","—"],
+["endanger","danger","dangerous","dangerously","safe"],
+["—","honesty","honest","honestly","dishonest"],
+["—","health","healthy","healthily","unhealthy"],
+["pollute","pollution","polluted","—","clean"],
+["—","responsibility","responsible","responsibly","irresponsible"],
+["know","knowledge","known","—","unknown"],
+["—","possibility","possible","possibly","impossible"],
+["—","happiness","happy","happily","unhappy"],
+["care","care","careful","carefully","careless"],
+["agree","agreement","—","—","disagree"],
+["behave","behaviour","—","—","misbehave"],
+["choose","choice","—","—","—"],
+["describe","description","—","—","—"],
+["develop","development","—","—","—"],
+["expect","expectation","expected","—","unexpected"],
+["—","loneliness","lonely","—","—"],
+["—","politeness","polite","politely","impolite, rude"],
+["compete","competition, competitor","competitive","—","—"],
+["protect","protection","protective","—","—"],
+["advise","advice","—","—","—"],
+["achieve","achievement","—","—","—"],
+["complain","complaint","—","—","—"],
+["prepare","preparation","prepared","—","unprepared"],
+["solve","solution","—","—","—"]
+];
+
+// Übungen: q (mit ___), a (Lösungen mit |), e (Erklärung)
+const EX_USED = [
+{q:"My grandma ___ in the outback. (live)",a:"used to live",e:"Früher, heute nicht mehr → used to + Grundform."},
+{q:"I ___ snails, but now I think they're cute. (not like)",a:"didn't use to like",e:"Verneinung: didn't use to – use ohne d!"},
+{q:"___ snorkelling when you lived in Australia? (you / go)",a:"did you use to go",e:"Frage: Did + Person + use to + Grundform."},
+{q:"There ___ a small hut here, but now there's a hotel. (be)",a:"used to be",e:"Zustand früher → used to be."},
+{q:"Back then she ___ a mobile phone. (not have)",a:"didn't use to have",e:"didn't use to + Grundform."},
+{q:"Where ___ before you moved to Munich? (you / live)",a:"did you use to live",e:"Fragewort + did + Person + use to …"},
+{q:"I ___ get up early. Now I sleep until nine. (used to / am used to)",a:"used to",e:"Früher so, heute nicht mehr → used to."},
+{q:"After a year in Sydney, Tom ___ driving on the left. (used to / is used to)",a:"is used to",e:"gewohnt sein = be used to + -ing."},
+{q:"Korrigiere den Satz: I didn't used to eat vegetables.",a:"i didn't use to eat vegetables",e:"Nach did/didn't steht immer use – ohne d."},
+{q:"Übersetze: Früher habe ich viel Sport gemacht.",a:"i used to do a lot of sport|i used to do lots of sport|i used to do a lot of sports|i used to do much sport",e:"Früher + regelmäßig → used to do."},
+{q:"Übersetze: Gab es hier früher einen Park?",a:"did there use to be a park here",e:"there is → Did there use to be …?"},
+{q:"He ___, but he cut it out last year. (smoke)",a:"used to smoke",e:"Gewohnheit, die aufgehört hat → used to."},
+{q:"Forme um: In the past people travelled to Australia by ship. They don't now. → People ___ to Australia by ship.",a:"used to travel",e:"used to + Grundform (travel, nicht travelled)."},
+{q:"Aboriginal children ___ from their families. (be separated)",a:"used to be separated",e:"Auch im Passiv: used to be + 3. Form."},
+{q:"I'm new here. I ___ the hot weather yet. (not / be used to)",a:"am not used to|'m not used to",e:"nicht gewohnt sein = be not used to."},
+{q:"When we were kids, we ___ in the backyard every day. (play)",a:"used to play|would play",e:"Wiederholte Handlung: used to oder would. Bei Zuständen (be, have, live, like) nur used to!"}
+];
+const EX_ING = [
+{q:"You should apologize for ___ such nasty things. (say)",a:"saying",e:"Nach Präposition (for) → -ing."},
+{q:"She congratulated us on ___ such good results. (get)",a:"getting",e:"congratulate sb. on + -ing."},
+{q:"He denied ___ anything to do with her death. (have)",a:"having",e:"deny + -ing."},
+{q:"Do you ever dream of ___ around the world? (sail)",a:"sailing",e:"dream of + -ing."},
+{q:"They campaigned for ___ bus tickets cheaper. (make)",a:"making",e:"campaign for + -ing."},
+{q:"I'm looking forward to ___ you. (see)",a:"seeing",e:"look forward to + -ing – hier ist to eine Präposition!"},
+{q:"I would recommend ___ a doctor about this problem. (see)",a:"seeing",e:"recommend + -ing."},
+{q:"Let's walk instead of ___ the bus. (take)",a:"taking",e:"instead of + -ing."},
+{q:"Try to avoid ___ the same mistakes. (make)",a:"making",e:"avoid + -ing."},
+{q:"I can't get used to ___ on the left. (drive)",a:"driving",e:"get used to + -ing."},
+{q:"Congratulations ___ your birthday!",a:"on",e:"congratulations ON sth."},
+{q:"My parents are proud ___ me.",a:"of",e:"proud OF."},
+{q:"She often suffers ___ headaches.",a:"from",e:"suffer FROM."},
+{q:"He apologized to her ___ being late.",a:"for",e:"apologize TO sb. FOR sth."},
+{q:"Jack is a friend of ___. (ich)",a:"mine",e:"a friend of mine/yours/his/hers/ours/theirs."},
+{q:"I would recommend ___ you see your doctor.",a:"that",e:"recommend that + Satz."}
+];
+const EX_WF = [
+{q:"Thank you for your ___. (explain)",a:"explanation",e:"Nach your → Nomen: -ation."},
+{q:"She's a very ___ player. (success)",a:"successful",e:"Vor Nomen → Adjektiv: -ful."},
+{q:"It's ___ to drive without a licence. (legal)",a:"illegal",e:"Gegenteil: il- vor l."},
+{q:"The ___ of the people in Sydney surprised me. (friend)",a:"friendliness",e:"the ___ of → Nomen: -ness."},
+{q:"My friends gave me lots of ___. (encourage)",a:"encouragement",e:"Nomen: -ment."},
+{q:"Some snakes are very ___. (venom)",a:"venomous",e:"Adjektiv: -ous."},
+{q:"Please come ___! (immediate)",a:"immediately",e:"Beschreibt das Verb → Adverb: -ly."},
+{q:"___ is a big problem in some areas. (employ) – Arbeitslosigkeit",a:"unemployment",e:"un- + employ + -ment."},
+{q:"His ___ of the crime didn't help him. (deny)",a:"denial",e:"Nomen von deny = denial."},
+{q:"They showed complete ___ of the dangers. (ignore)",a:"ignorance",e:"Nomen: -ance."},
+{q:"Can you ___ this text, please? (short)",a:"shorten",e:"Verb: -en (kürzer machen)."},
+{q:"His parents looked at him with ___. (proud)",a:"pride",e:"Nomen von proud = pride."},
+{q:"We need to find a ___. (solve)",a:"solution",e:"Nomen: solve → solution."},
+{q:"It was a hard ___. (decide)",a:"decision",e:"Nomen: decide → decision."},
+{q:"The ___ that my bag was gone hit me. (realize)",a:"realization|realisation",e:"Nomen: -ation."},
+{q:"Learn ___ – a little every day. (regular)",a:"regularly",e:"Adverb: -ly."},
+{q:"‘Arrive’ is regular, but ‘go’ is ___. (regular)",a:"irregular",e:"Gegenteil: ir- vor r."},
+{q:"Life in the outback has many ___. (difficult)",a:"difficulties",e:"many → Nomen im Plural."},
+{q:"They drove there ___ – in two different cars. (separate)",a:"separately",e:"Adverb: -ly."},
+{q:"I think you owe her an ___. (apologize)",a:"apology",e:"an ___ → Nomen."},
+{q:"Be ___ – the dog bites! (care)",a:"careful",e:"be + Adjektiv: -ful."},
+{q:"This old phone is ___. I can't do anything with it. (use)",a:"useless",e:"ohne Nutzen → -less."},
+{q:"Air ___ is a big problem in big cities. (pollute)",a:"pollution",e:"Nomen: -tion."},
+{q:"Eating too much junk food is ___. (health)",a:"unhealthy",e:"Gegenteil von healthy: un-."},
+{q:"You have to take ___ for your actions. (responsible)",a:"responsibility",e:"Nomen: -ity."},
+{q:"He always lies. He's very ___. (honest)",a:"dishonest",e:"Gegenteil von honest: dis-."},
+{q:"Swimming with crocodiles is ___. (danger)",a:"dangerous",e:"Adjektiv: -ous."},
+{q:"Her ___ in class was perfect. (behave)",a:"behaviour|behavior",e:"Nomen: behave → behaviour."},
+{q:"My English has ___ a lot this year. (improvement)",a:"improved",e:"has + 3. Form vom Verb."},
+{q:"We got a ___ of our booking by email. (confirm)",a:"confirmation",e:"a ___ of → Nomen."},
+{q:"The ___ of immigrants takes time. (integrate)",a:"integration",e:"Nomen: -ation."},
+{q:"The sun was shining ___. (bright)",a:"brightly",e:"Beschreibt shining → Adverb."},
+{q:"In her new town she suffered from ___. (lonely)",a:"loneliness",e:"Nomen: lonely → loneliness (y → i)."},
+{q:"It's ___ to finish all this in one day. (possible)",a:"impossible",e:"Gegenteil: im- vor p."}
+];
+
+// Synonyme (Gruppen) und Gegenteile ([Wort, Gegenteil(e)…])
+const SYN = [
+["big","large"],["small","little"],["start","begin"],["finish","end"],["often","frequently"],["fast","quick"],["maybe","perhaps"],
+["clever","smart"],["answer","reply"],["difficult","hard"],["easy","simple"],["choose","pick"],["get","receive"],["try","attempt"],
+["help","support"],["mistake","error"],["mate","friend"],["opinion","point of view"],["immediately","at once"],["false","wrong"],
+["shout","yell"],["rich","wealthy"],["afraid","scared"],["glad","happy"],["strange","weird"],["whole","entire"],["nearly","almost"],
+["sure","certain"],["near","close"],["trip","journey"],["huge","enormous"],["although","though"],["despite","in spite of"],
+["therefore","so"],["cheers","thanks"],["kid","child"],["film","movie"],["holiday","vacation"],["shop","store"],["autumn","fall"],["garden","backyard"]
+];
+const OPP = [
+["legal","illegal"],["regular","irregular"],["direct","indirect"],["formal","informal"],["amateur","professional"],["employment","unemployment"],
+["bright","dark"],["permanent","temporary"],["synonym","antonym"],["past","future"],["dry","wet"],["perfect","imperfect"],["true","false"],
+["long-term","short-term"],["friendly","unfriendly"],["calm","nervous"],["cheap","expensive"],["safe","dangerous"],["polite","rude","impolite"],
+["rich","poor"],["success","failure"],["win","lose"],["accept","refuse"],["increase","decrease"],["remember","forget"],["empty","full"],
+["strong","weak"],["loud","quiet"],["guilty","innocent"],["advantage","disadvantage"],["agree","disagree"],["possible","impossible"],
+["careful","careless"],["useful","useless"],["healthy","unhealthy"],["honest","dishonest"],["ancient","modern"],["common","rare"],
+["include","exclude"],["borrow","lend"],["admit","deny"],["similar","different"],["huge","tiny"],["brave","cowardly"],["fair","unfair"],
+["on purpose","by accident"],["succeed","fail"],["arrive","leave"],["encourage","discourage"],["proud","ashamed"],["patient","impatient"],["heavy","light"]
+];
+
+const GRAM = {
+ used:{title:"used to", rule:[
+  "<b>used to + Grundform</b> = früher (immer), heute nicht mehr. Für Gewohnheiten und Zustände in der Vergangenheit.",
+  "Verneinung und Frage mit <b>did</b>: dann heißt es <b>use to</b> – ohne d!",
+  "Signalwörter: <i>back then, when I was a child, in the past, years ago</i>.",
+  "Stolperfalle: <b>be used to + -ing</b> = etwas gewohnt sein (<i>I'm used to getting up early.</i>), <b>get used to + -ing</b> = sich gewöhnen an."],
+  pat:[
+  ["Früher habe ich in einer Kleinstadt gewohnt, aber jetzt wohne ich in Sydney.","I used to live in a small town, but now I live in Sydney."],
+  ["Früher mochte ich Schnorcheln nicht.","I didn't use to like snorkelling."],
+  ["Hast du früher jeden Tag draußen gespielt?","Did you use to play outside every day?"]], ex:EX_USED},
+ wf:{title:"Word families", rule:[
+  "Erst fragen: <b>Welche Wortart braucht die Lücke?</b> Nach <i>a / the / my / your</i> → Nomen. Nach <i>be / very</i> oder vor einem Nomen → Adjektiv. Beschreibt ein Verb → Adverb.",
+  "<b>Nomen:</b> -tion/-sion (explanation), -ment (encouragement), -ness (friendliness), -ity (difficulty), -ance/-ence (ignorance), -er/-or (Person: explorer), -ship (friendship).",
+  "<b>Adjektiv:</b> -ful (useful), -less (useless), -ous (venomous), -al (critical), -ive (protective), -y (healthy).",
+  "<b>Adverb:</b> Adjektiv + -ly (immediately, separately). y → i: happy → happily. Achtung: good → well!",
+  "<b>Verb:</b> -ize (realize, criticize), -en (shorten, brighten)."],
+  pat:[
+  ["Danke für deine Erklärung – du hast es wirklich gut erklärt.","Thanks for your explanation – you explained it really well."],
+  ["Sie ist eine erfolgreiche Spielerin, weil sie regelmäßig trainiert.","She is a successful player because she trains regularly."],
+  ["Es ist illegal und verantwortungslos, ohne Führerschein zu fahren.","It's illegal and irresponsible to drive without a licence."]], ex:EX_WF},
+ ing:{title:"-ing & Präpositionen", rule:[
+  "Nach einer <b>Präposition</b> steht immer <b>-ing</b>: apologize <b>for</b> saying, dream <b>of</b> sailing, congratulate <b>on</b> getting, instead <b>of</b> taking.",
+  "Auch <b>look forward to</b> + -ing – das <i>to</i> ist hier eine Präposition!",
+  "Bestimmte Verben + -ing: <b>deny, avoid, enjoy, finish, recommend</b>. Bei <b>bear</b> und <b>continue</b> geht -ing oder to + Grundform.",
+  "<b>recommend</b>: I recommend <i>a visit</i> / <i>seeing</i> a doctor / <i>that you see</i> your doctor. Einer anderen Person: recommend your dad <i>to see</i> his doctor.",
+  "Feste Präpositionen: congratulations <b>on</b>, proud <b>of</b>, suffer <b>from</b>, apologize <b>to</b> sb. <b>for</b> sth., a friend <b>of mine</b>."],
+  pat:[
+  ["Du solltest dich dafür entschuldigen, so gemeine Sachen gesagt zu haben.","You should apologize for saying such nasty things."],
+  ["Er bestritt, etwas damit zu tun zu haben.","He denied having anything to do with it."],
+  ["Ich freue mich darauf, dich zu sehen.","I'm looking forward to seeing you."]], ex:EX_ING},
+ syn:{title:"Synonyme & Gegenteile", rule:[
+  "<b>Synonym</b> = gleiche Bedeutung (big = large). <b>Antonym</b> = Gegenteil (amateur ◄► professional).",
+  "Gegenteil mit Vorsilbe: <b>un-</b> (unfriendly), <b>in-</b> (informal, indirect), <b>il-</b> vor l (illegal), <b>ir-</b> vor r (irregular), <b>im-</b> vor m/p (impossible, imperfect), <b>dis-</b> (dishonest, disagree).",
+  "Gegenteil mit Nachsilbe: <b>-ful ◄► -less</b> (useful ◄► useless, careful ◄► careless).",
+  "Manche Gegenteile sind ganz eigene Wörter: permanent ◄► temporary, admit ◄► deny, borrow ◄► lend."],
+  pat:[
+  ["‚Large‘ ist ein Synonym von ‚big‘.","“Large” is a synonym of “big”."],
+  ["‚Amateur‘ ist das Gegenteil von ‚professional‘.","“Amateur” is the opposite of “professional”."],
+  ["Legal – illegal, regular – irregular, possible – impossible.","Legal – illegal, regular – irregular, possible – impossible."]], ex:null}
+};
+
+const TRAPS = [
+["didn't use to","Nach did/didn't: <b>use to</b> – ohne d. Did you <b>use</b> to …?"],
+["used to ≠ be used to","<b>used to do</b> = früher immer · <b>be used to doing</b> = gewohnt sein · <b>get used to doing</b> = sich gewöhnen."],
+["a friend of mine","a friend of <b>mine / his / hers / ours</b> – nicht: of me / him / her."],
+["people","<b>people</b> = Menschen (Plural): People <b>are</b> … · <b>peoples</b> = Völker."],
+["use [juːs] / use [juːz]","Nomen <b>use</b> mit scharfem s, Verb <b>to use</b> mit weichem s."],
+["while / a while","<b>while</b> = während · <b>a while</b> = eine Weile."],
+["anyway","1. trotzdem: <i>I'll go anyway.</i> 2. sowieso: <i>I'm driving there anyway.</i>"],
+["then / back then","<b>then</b> = dann · <b>(back) then</b> = damals."],
+["present","1. Geschenk 2. Gegenwart (the past – the present – the future)."],
+["actually ≠ aktuell","<b>actually</b> = eigentlich · aktuell = <b>current</b> (current affairs)."],
+["Präposition + -ing","apologize for <b>saying</b>, dream of <b>sailing</b>, congratulate on <b>getting</b>, look forward to <b>seeing</b>."],
+["Präpositionen","congratulations <b>on</b> · proud <b>of</b> · suffer <b>from</b> · apologize <b>to</b> sb. <b>for</b> sth."],
+["Vorsilben fürs Gegenteil","<b>il-</b>legal, <b>ir-</b>regular, <b>im-</b>possible, <b>in-</b>formal, <b>un-</b>friendly, <b>dis-</b>honest."],
+["unregelmäßige Verben","bite – bit – bitten · sting – stung – stung · bear – bore – borne · bring – brought – brought."],
+["Plural","jellyfish → jellyfish · octopus → octopuses · paralysis → paralyses · advice und equipment: kein Plural!"],
+["Betonung 1. Silbe","CROcodile, CAmel, CONtinent, CEremony, DIScipline, CREAture, CONflict, EXpert, Accent, Amateur, INtegrate · aber: geneRAtion."],
+["AE / BE","AE backyard = BE garden · AE mouthguard = BE gumshield."],
+["separate","Verb [ˈsepəreɪt] (trennen) · Adjektiv [ˈseprət] (getrennt) · Adverb separately."]
+];
+
+const PLAN = [
+ {day:"Tag 1", date:"Dienstag, 10. November", sub:"Intensivphase: Vokabeln & Grammatik", steps:[
+  {id:"d1a",min:10,m:"80/20",t:"Triage Unit 1",d:"Alle Unit-1-Wörter einmal blitzschnell: pro Wort 2 Sekunden. Sicher oder unsicher? Nur Unsicheres kommt in den Stapel „Neu“.",go:["cards","u","u1"]},
+  {id:"d1b",min:10,m:"80/20",t:"Triage Grundwortschatz",d:"Dasselbe mit dem Grundwortschatz. Ehrlich sein: „kenn ich irgendwie“ heißt unsicher.",go:["cards","u","gws"]},
+  {id:"d1c",min:20,m:"3 Stapel · Mini-Context",t:"Runde 1: Stapel „Neu“",d:"Deutsch lesen, Satz mit Lücke lesen, englisches Wort laut sagen, dann aufdecken und den ganzen Satz einmal laut lesen. Gewusst → „Fast gekonnt“, nicht gewusst → „Problem“.",go:["cards","n","all"]},
+  {id:"d1p",min:5,m:"Pause",t:"5 Minuten Pause",d:"Aufstehen, Wasser trinken, Fenster auf. Kein Scrollen."},
+  {id:"d1d",min:15,m:"Grammatik-Muster",t:"used to",d:"Regel in 2 Minuten lesen. Die 3 Mustersätze lernen, bis du sie aus dem Deutschen sagen kannst. Dann die Übungen.",go:["gram","used"]},
+  {id:"d1e",min:15,m:"Grammatik-Muster",t:"Word families",d:"Endungen-Regel lesen, 3 Mustersätze auswendig, dann die Wortfamilien-Übungen.",go:["gram","wf"]},
+  {id:"d1f",min:10,m:"3 Stapel",t:"Runde 2: „Fast gekonnt“",d:"Gewusst → raus (gekonnt). Nicht gewusst → Problemstapel.",go:["cards","f","all"]},
+  {id:"d1g",min:10,m:"Synonyme & Gegenteile",t:"Quiz: Synonyme & Gegenteile",d:"Eine Runde mit 15 Wörtern. Achte auf die Vorsilben il-, ir-, im-, un-, dis-.",go:["words","quiz"]},
+  {id:"d1h",min:5,m:"Fehler-Logbuch",t:"Fehler des Tages ansehen",d:"Lies dein Logbuch. Hake bei den Stolperfallen ab, was schon sitzt.",go:["log"]},
+  {id:"d1i",min:10,m:"Abend-Reset",t:"Abend-Reset vor dem Schlafen",d:"Licht gedimmt: nur den Problemstapel einmal durchgehen. Danach nichts Neues mehr – Handy weg, schlafen.",go:["cards","reset","all"]}
+ ]},
+ {day:"Tag 2", date:"Mittwoch, 11. November", sub:"Feinschliff, Problemstapel & Simulation", steps:[
+  {id:"d2a",min:10,m:"3 Stapel",t:"Check: Problemstapel",d:"Gleich als Erstes. Über Nacht hat dein Gehirn sortiert – viele Problemwörter sitzen jetzt. Zweimal richtig → zurück zu „Fast gekonnt“.",go:["cards","p","all"]},
+  {id:"d2b",min:15,m:"3 Stapel",t:"Rest-Runde: „Neu“ und „Fast gekonnt“",d:"Alles, was noch in „Neu“ oder „Fast gekonnt“ liegt, einmal durch. Ziel: Am Ende bleibt nur der Problemstapel übrig.",go:["cards","n","all"]},
+  {id:"d2c",min:10,m:"Grammatik-Muster",t:"12 Mustersätze aus dem Kopf",d:"Alle Mustersätze (used to, Word families, -ing, Gegenteile) nur vom Deutschen aus auf Englisch sagen oder aufschreiben.",go:["gram","used"]},
+  {id:"d2d",min:10,m:"Grammatik-Muster",t:"-ing & Präpositionen",d:"Die Übungen zu -ing und festen Präpositionen. Danach die falschen used-to-Aufgaben von gestern wiederholen.",go:["gram","ing"]},
+  {id:"d2e",min:10,m:"Word families",t:"Wortfamilien Runde 2",d:"Nur die Wortfamilien-Übungen, die gestern falsch waren. Immer zuerst die Wortart bestimmen.",go:["gram","wf"]},
+  {id:"d2p",min:5,m:"Pause",t:"5 Minuten Pause",d:"Kurz bewegen, dann geht's an die Probe."},
+  {id:"d2f",min:25,m:"Simulation",t:"Probe-Schulaufgabe",d:"Wie in echt: am Stück, ohne Nachschauen. Danach siehst du Punkte und eine grobe Note.",go:["test"]},
+  {id:"d2g",min:10,m:"Fehler-Logbuch",t:"Probe auswerten",d:"Alle Fehler der Probe stehen jetzt im Logbuch und im Problemstapel. Lies zu jedem Fehler die richtige Lösung laut.",go:["log"]},
+  {id:"d2h",min:10,m:"Mini-Context",t:"5 eigene Sätze",d:"Schreib 5 kurze Sätze mit deinen schlimmsten Problemwörtern. Eigene Sätze bleiben am besten hängen.",go:["log","own"]},
+  {id:"d2i",min:10,m:"Abend-Reset",t:"Abend-Reset",d:"Problemstapel ein letztes Mal, dann die Stolperfallen-Liste lesen. Danach schlafen – Schlaf bringt jetzt mehr als Lernen.",go:["cards","reset","all"]}
+ ]},
+ {day:"Schulaufgabe", date:"Donnerstag, 12. November", sub:"Am Morgen", steps:[
+  {id:"sa1",min:5,m:"Fehler-Logbuch",t:"Nur noch lesen",d:"Stolperfallen-Liste und deine 12 Mustersätze einmal lesen. Nichts Neues anfangen. Du bist vorbereitet.",go:["log"]}
+ ]}
+];
+const EXAM = new Date(2026,10,12,8,0);
+
+/* ================== ZUSTAND ================== */
+const KEY="englisch-crashkurs-v1";
+const CARDS=[]; const byId={};
+function slug(s){return s.toLowerCase().replace(/[^a-z0-9]+/g,"-")}
+[[U1,"u1"],[GWS,"gws"]].forEach(([list,deck])=>list.forEach(r=>{let id=deck+":"+slug(r[0]);while(byId[id])id+="x";const c={id,deck,en:r[0],de:r[1],ex:r[2],info:r[3]||""};CARDS.push(c);byId[id]=c;}));
+
+function fresh(){return {c:{},plan:{},log:[],trap:{},pat:{},exr:{},own:"",dir:"de",typing:false,deck:"all",probe:null,view:"plan",gtab:"used",wtab:"fam"}}
+let S=fresh();
+try{const raw=localStorage.getItem(KEY); if(raw) S=Object.assign(fresh(),JSON.parse(raw));}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+function cs(id){return S.c[id]||(S.c[id]={s:"u",st:0,w:0})}
+const STK={u:["Unsortiert","--s-u"],n:["Neu","--s-n"],f:["Fast gekonnt","--s-f"],p:["Problem","--s-p"],k:["Gekonnt","--s-k"]};
+
+/* ================== HELFER ================== */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+function norm(s){
+  return String(s).toLowerCase().replace(/[’‘`´]/g,"'").replace(/[“”„"]/g,"")
+   .replace(/\bcan't\b/g,"cannot").replace(/\bwon't\b/g,"will not").replace(/n't\b/g," not")
+   .replace(/'m\b/g," am").replace(/'re\b/g," are").replace(/'ve\b/g," have").replace(/'ll\b/g," will").replace(/\b(it|he|she|that|there|what)'s\b/g,"$1 is")
+   .replace(/[.,!?;:()…–-]/g," ").replace(/\s+/g," ").trim();
+}
+function vnorm(s){return norm(s).replace(/\b(sth|sb|something|somebody|someone)\b/g," ").replace(/^(to|the|a|an) /,"").replace(/\s+/g," ").trim()}
+function lev(a,b){const m=a.length,n=b.length;if(Math.abs(m-n)>2)return 9;const d=Array.from({length:m+1},(_,i)=>[i]);for(let j=1;j<=n;j++)d[0][j]=j;for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));return d[m][n]}
+function target(c){const m=c.ex.match(/\[([^\]]+)\]/);return m?m[1]:c.en}
+function vocabVariants(c){const v=new Set([vnorm(c.en),vnorm(target(c))]);c.en.split(/[,/]/).forEach(x=>v.add(vnorm(x)));if(c.en==="anti-")v.add("anti");return [...v].filter(Boolean)}
+// Ergebnis: "ok" | "typo" | "bad"
+function checkVocab(c,input){const i=vnorm(input);if(!i)return "bad";const vs=vocabVariants(c);if(vs.includes(i))return "ok";if(vs.some(v=>v.length>=5&&lev(v,i)<=1))return "typo";return "bad"}
+function checkEx(ans,input){const i=norm(input);if(!i)return false;return ans.split("|").some(a=>norm(a)===i)}
+function gapHTML(ex){return esc(ex).replace(/\[([^\]]+)\]/,'<span class="gap" aria-label="Lücke"></span>')}
+function markHTML(ex){return esc(ex).replace(/\[([^\]]+)\]/,"<mark>$1</mark>")}
+function toast(t){const el=$("#toast");el.textContent=t;el.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>el.hidden=true,2200)}
+function addLog(entry){
+  const key=entry.key;let e=key&&S.log.find(x=>x.key===key);
+  if(e){e.n=(e.n||1)+1;e.falsch=entry.falsch||e.falsch;e.t=Date.now();e.solved=false}
+  else S.log.unshift(Object.assign({t:Date.now(),n:1,solved:false},entry));
+  save();
+}
+function daysLeft(){const now=new Date();const a=new Date(now.getFullYear(),now.getMonth(),now.getDate());const b=new Date(EXAM.getFullYear(),EXAM.getMonth(),EXAM.getDate());return Math.round((b-a)/864e5)}
+function deckCards(deck){return CARDS.filter(c=>deck==="all"||c.deck===deck)}
+function counts(deck){const r={u:0,n:0,f:0,p:0,k:0};deckCards(deck).forEach(c=>r[cs(c.id).s]++);return r}
+
+/* ================== NAVIGATION ================== */
+const ICONS={
+ plan:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6h11M9 12h11M9 18h11"/><path d="m3 6 1.5 1.5L7 5M3 12l1.5 1.5L7 11"/><circle cx="5" cy="18" r="1.3"/></svg>',
+ cards:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="7" width="15" height="12" rx="2"/><path d="M7 4h12a2 2 0 0 1 2 2v10"/></svg>',
+ gram:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5M8 7h7M8 11h5"/></svg>',
+ words:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18 7.5 6 12 18M4.7 14h5.6"/><path d="M15 10h6M15 14h6M15 18h4"/></svg>',
+ log:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2.5 20h19z"/><path d="M12 10v4M12 17.2v.1"/></svg>',
+ test:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4l6 6L9 21H3v-6z"/><path d="m12 6 6 6"/></svg>'};
+const NAV=[["plan","Plan"],["cards","Karten"],["gram","Grammatik"],["words","Wörter"],["log","Fehler"],["test","Probe"]];
+function renderNav(){$("#nav").innerHTML=NAV.map(([k,l])=>`<button data-act="view" data-v="${k}" ${S.view===k?'aria-current="page"':''}>${ICONS[k]}<span>${l}</span></button>`).join("")}
+function go(v){S.view=v;save();render();window.scrollTo(0,0)}
+
+/* ================== PLAN ================== */
+function vPlan(){
+  const all=PLAN.flatMap(d=>d.steps),done=all.filter(s=>S.plan[s.id]).length,dl=daysLeft();
+  const cnt=counts("all");
+  const late=new Date().getHours()>=20&&new Date().getDate()===10&&new Date().getMonth()===10;
+  return `<header class="top"><div><p class="eyebrow">Go Ahead 9 · Unit 1 + Grundwortschatz</p><h1>Englisch Crashkurs</h1></div>
+  <div class="count"><b>${dl>0?dl:dl===0?"Heute":"–"}</b><span class="muted">${dl>1?"Tage bis zur Schulaufgabe":dl===1?"Tag bis zur Schulaufgabe":dl===0?"ist die Schulaufgabe":""}</span></div></header>
+  <section class="panel"><div class="row" style="justify-content:space-between"><h3>Fortschritt</h3><span class="muted small">${done} von ${all.length} Schritten</span></div>
+   <div class="progress" aria-hidden="true"><i style="width:${Math.round(done/all.length*100)}%"></i></div>
+   <div class="row small">${Object.keys(STK).map(k=>`<span class="stackdot" style="--c:var(${STK[k][1]})"><i></i>${STK[k][0]} ${cnt[k]}</span>`).join("")}</div></section>
+  ${late?`<p class="note"><b>Heute schon spät?</b> Mach heute Abend nur die Schritte 1–3 und den Abend-Reset (ca. 45 Min.). Die Grammatik-Schritte holst du morgen gleich zu Beginn nach.</p>`:""}
+  ${PLAN.map(d=>`<section class="day"><div class="dayhead"><div><p class="eyebrow">${d.date}</p><h2>${d.day} · ${d.sub}</h2></div>
+   <span class="muted small">${d.steps.reduce((a,s)=>a+s.min,0)} Min.</span></div>
+   ${d.steps.map((s,i)=>`<article class="step ${S.plan[s.id]?"done":""}">
+    <button class="tick" data-act="tick" data-id="${s.id}" aria-label="${esc(s.t)} abhaken" aria-pressed="${!!S.plan[s.id]}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></button>
+    <div class="st-body"><div class="st-meta"><span class="chip">${i+1}</span><span class="chip m">${esc(s.m)}</span><span class="chip">${s.min} Min.</span></div>
+     <p class="st-title">${esc(s.t)}</p>${s.d?`<p class="muted small">${esc(s.d)}</p>`:""}
+     ${s.go?`<div><button class="btn" data-act="goto" data-id="${s.id}">Los geht's</button></div>`:""}</div></article>`).join("")}
+  </section>`).join("")}
+  <section class="panel"><h3>Fortschritt zwischen Handy und Tablet übertragen</h3>
+   <p class="muted small">Dein Fortschritt wird auf jedem Gerät einzeln gespeichert. Kopiere den Code auf dem einen Gerät und füge ihn auf dem anderen ein.</p>
+   <div class="row"><button class="btn" data-act="export">Code kopieren</button></div>
+   <textarea id="xfer" placeholder="Hier den Code vom anderen Gerät einfügen …"></textarea>
+   <div class="row"><button class="btn" data-act="import">Code übernehmen</button><button class="btn ghost" data-act="reset-ask">Alles zurücksetzen</button></div>
+   <div id="resetq" hidden class="row note"><span>Wirklich alles löschen? Stapel, Plan und Logbuch gehen verloren.</span><button class="btn bad" data-act="reset-do">Ja, löschen</button><button class="btn" data-act="reset-no">Abbrechen</button></div>
+  </section>`;
+}
+
+/* ================== KARTEN ================== */
+let SES=null;
+function startSession(mode,deck){
+  if(deck)S.deck=deck;
+  const pool=mode==="reset"?CARDS.filter(c=>cs(c.id).s==="p"):deckCards(S.deck).filter(c=>cs(c.id).s===mode);
+  SES={mode,queue:shuffle(pool.map(c=>c.id)),rev:false,res:null,reps:{},right:0,wrong:0,total:pool.length};
+  S.view="cards";save();render();window.scrollTo(0,0);
+}
+function vCards(){
+  const cnt=counts(S.deck);
+  const deckSeg=`<div class="seg" role="group" aria-label="Wortliste">${[["all","Alle"],["u1","Unit 1"],["gws","Grundwortschatz"]].map(([k,l])=>`<button data-act="deck" data-d="${k}" aria-pressed="${S.deck===k}">${l}</button>`).join("")}</div>`;
+  const stacks=`<div class="stacks">${Object.keys(STK).map(k=>`<button class="stack" style="--c:var(${STK[k][1]})" data-act="start" data-m="${k}" ${cnt[k]&&k!=="k"?"":"disabled"} aria-label="${STK[k][0]}: ${cnt[k]} Karten${k!=="k"?", starten":""}"><b>${cnt[k]}</b><span>${k==="u"?"Unsortiert → Triage":STK[k][0]}</span></button>`).join("")}</div>`;
+  let body="";
+  if(SES&&SES.queue.length){body=cardHTML()}
+  else if(SES){body=`<section class="${SES.mode==="reset"?"calm":"panel"}">${SES.mode==="reset"?`<h2>Fertig für heute.</h2><p>Handy weg, Licht aus. Dein Gehirn sortiert die Wörter jetzt im Schlaf weiter.</p>`:`<h2>Runde geschafft</h2><p>${SES.total} Karten · ${SES.right} gewusst · ${SES.wrong} nicht gewusst.</p><p class="muted small">Tipp: Am Ende zählt nur noch der Problemstapel. Den wiederholst du so lange, bis er leer ist.</p>`}
+   <div class="row"><button class="btn primary" data-act="endses">Zur Übersicht</button>${counts("all").p?`<button class="btn" data-act="start" data-m="p">Problemstapel üben</button>`:""}</div></section>`}
+  else body=`<section class="panel"><h3>So funktionieren die 3 Stapel</h3>
+   <p><b>1. Triage (80/20):</b> Alle unsortierten Wörter einmal kurz: sicher → gekonnt, unsicher → <b style="color:var(--s-n)">Neu</b>.</p>
+   <p><b>2. Neu:</b> gewusst → <b style="color:var(--s-f)">Fast gekonnt</b>, nicht gewusst → <b style="color:var(--s-p)">Problem</b>.</p>
+   <p><b>3. Fast gekonnt:</b> gewusst → <b style="color:var(--s-k)">Gekonnt</b>, nicht gewusst → Problem.</p>
+   <p><b>Problem:</b> zweimal hintereinander gewusst → zurück zu Fast gekonnt. Am Ende wiederholst du nur noch diesen Stapel.</p>
+   <div class="row"><button class="btn primary" data-act="start" data-m="${cnt.u?"u":cnt.n?"n":cnt.f?"f":"p"}" ${cnt.u+cnt.n+cnt.f+cnt.p?"":"disabled"}>Weiterlernen</button><button class="btn" data-act="start" data-m="reset" ${counts("all").p?"":"disabled"}>Abend-Reset</button></div></section>
+   ${listHTML()}`;
+  if(SES&&SES.queue.length) return body;
+  return `<header class="top"><div><p class="eyebrow">Karteikasten · Mini-Context</p><h1>Vokabelkarten</h1></div></header>
+   ${deckSeg}${stacks}
+   <div class="row"><div class="seg" role="group" aria-label="Richtung"><button data-act="dir" data-d="de" aria-pressed="${S.dir==="de"}">Deutsch → Englisch</button><button data-act="dir" data-d="en" aria-pressed="${S.dir==="en"}">Englisch → Deutsch</button></div>
+   <div class="seg" role="group" aria-label="Antwort"><button data-act="typing" data-t="0" aria-pressed="${!S.typing}">Aufdecken</button><button data-act="typing" data-t="1" aria-pressed="${S.typing}">Eintippen</button></div></div>
+   ${body}`;
+}
+function cardHTML(){
+  const c=byId[SES.queue[0]],st=cs(c.id),mode=SES.mode,tri=mode==="u",reset=mode==="reset";
+  const typing=S.typing&&S.dir==="de"&&!tri;
+  const left=SES.queue.length;
+  const front=S.dir==="de"
+    ?`<p class="kc-q">${esc(c.de)}</p><p class="kc-ex">${gapHTML(c.ex)}</p>`
+    :`<p class="kc-q">${esc(c.en)}</p><p class="kc-ex">${markHTML(c.ex)}</p>`;
+  const back=`<div class="kc-a"><span class="en">${esc(S.dir==="de"?c.en:c.de)}</span>${S.dir==="de"?`<span>${markHTML(c.ex)}</span>`:""}${c.info?`<span class="kc-info">${esc(c.info)}</span>`:""}</div>`;
+  let ctrl;
+  if(tri) ctrl=`${SES.rev?back:""}<div class="row"><button class="btn big bad" data-act="rate" data-ok="0">Unsicher</button><button class="btn big ok" data-act="rate" data-ok="1">Sicher</button></div>
+    ${SES.rev?"":`<button class="btn ghost small" data-act="reveal">Lösung zeigen</button>`}`;
+  else if(typing&&!SES.rev) ctrl=`<form class="row" data-form="type" style="flex-wrap:nowrap"><input type="text" id="ans" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Englisch eintippen …" aria-label="Antwort"><button class="btn primary">Prüfen</button></form>`;
+  else if(!SES.rev) ctrl=`<button class="btn big primary" data-act="reveal">Aufdecken</button>`;
+  else if(typing) ctrl=`${back}<p class="res ${SES.res==="ok"?"ok":SES.res==="typo"?"warn":"bad"}">${SES.res==="ok"?"Richtig!":SES.res==="typo"?"Fast – achte auf die Schreibweise. Zählt als gewusst.":"Leider falsch. Kommt in den Problemstapel."}</p><button class="btn big primary" data-act="rate" data-ok="${SES.res==="bad"?0:1}">Weiter</button>`;
+  else ctrl=`${back}<div class="row"><button class="btn big bad" data-act="rate" data-ok="0">Nicht gewusst</button><button class="btn big ok" data-act="rate" data-ok="1">Gewusst</button></div>`;
+  const inner=`<article class="kcard"><div class="kc-top"><span class="stackdot" style="--c:var(${STK[st.s][1]})"><i></i>${STK[st.s][0]}${st.s==="p"&&st.st?" · 1× richtig":""}</span><span class="muted small">${c.deck==="u1"?"Unit 1":"Grundwortschatz"} · noch ${left}</span></div>${front}${ctrl}</article>`;
+  const title=tri?"Triage: sicher oder unsicher?":reset?"Abend-Reset":`Stapel: ${STK[mode][0]}`;
+  if(reset) return `<section class="calm"><div class="row" style="justify-content:space-between"><h2>${title}</h2><button class="btn ghost" style="color:inherit;border-color:#3a4566" data-act="endses">Beenden</button></div><p class="muted small">Nur der Problemstapel, einmal durch. Langsam lesen, Satz leise mitsprechen.</p>${inner}</section>`;
+  return `<section class="day"><div class="row" style="justify-content:space-between;flex-wrap:nowrap"><h2>${title}</h2><button class="btn ghost" data-act="endses">Beenden</button></div>
+   <div class="row small"><button class="btn ghost small" data-act="dir" data-d="${S.dir==="de"?"en":"de"}">${S.dir==="de"?"Deutsch → Englisch":"Englisch → Deutsch"} ⇄</button>${tri?"":`<button class="btn ghost small" data-act="typing" data-t="${S.typing?0:1}">${S.typing?"Eintippen":"Aufdecken"} ⇄</button>`}</div>${inner}</section>`;
+}
+function rate(ok){
+  const id=SES.queue.shift(),c=byId[id],st=cs(id),m=SES.mode;
+  SES.rev=false;SES.res=null;SES.reps[id]=(SES.reps[id]||0)+1;
+  const again=()=>{if(SES.reps[id]<4)SES.queue.splice(Math.min(3,SES.queue.length),0,id)};
+  if(ok)SES.right++;else SES.wrong++;
+  if(m==="u"){st.s=ok?"k":"n"}
+  else{
+    if(!ok){st.w++;st.st=0;addLog({key:"v:"+id,typ:"Vokabel",frage:c.de,falsch:SES.lastInput||"",richtig:c.en,notiz:c.info||""})}
+    if(m==="n")st.s=ok?"f":"p";
+    else if(m==="f")st.s=ok?"k":"p";
+    else if(m==="p"||m==="reset"){
+      if(st.s!=="p"){st.s=ok?"f":"p"}
+      else if(ok){st.st++;if(st.st>=2){st.s="f";st.st=0}else if(m==="p")again()}
+      else if(m==="p")again();
+    }
+  }
+  SES.lastInput="";save();render();
+}
+function listHTML(){
+  const q=(S.q||"").toLowerCase();
+  const items=deckCards(S.deck).filter(c=>!q||c.en.toLowerCase().includes(q)||c.de.toLowerCase().includes(q));
+  return `<section class="panel"><div class="row" style="justify-content:space-between"><h3>Alle Wörter</h3><span class="muted small">${items.length}</span></div>
+   <input type="text" id="search" placeholder="Suchen (englisch oder deutsch) …" value="${esc(S.q||"")}" aria-label="Wörter suchen">
+   <div class="list">${items.slice(0,q?400:60).map(c=>{const s=cs(c.id).s;return `<div class="li"><b>${esc(c.en)}</b><span class="muted">${esc(c.de)}</span><button class="stackdot" style="--c:var(${STK[s][1]});border:0;background:none" data-act="cycle" data-id="${c.id}" aria-label="Stapel ändern (${STK[s][0]})"><i></i>${STK[s][0]}</button></div>`}).join("")}</div>
+   ${!q&&items.length>60?`<p class="muted small">Die ersten 60 von ${items.length}. Suche, um alle zu finden. Tippe auf den Stapel, um ein Wort selbst umzusortieren.</p>`:""}</section>`;
+}
+
+/* ================== ÜBUNGEN ================== */
+function exListHTML(key,list){
+  const r=S.exr[key]||{};
+  const wrongOnly=S["wo_"+key];
+  const idx=list.map((x,i)=>i).filter(i=>!wrongOnly||r[i]===false);
+  const score=Object.values(r).filter(v=>v===true).length;
+  return `<div class="row" style="justify-content:space-between"><span class="muted small">${score} von ${list.length} richtig</span>
+   <div class="row"><button class="btn ghost small" data-act="wo" data-k="${key}" aria-pressed="${!!wrongOnly}">${wrongOnly?"Alle zeigen":"Nur falsche"}</button><button class="btn ghost small" data-act="exreset" data-k="${key}">Neu starten</button></div></div>
+   ${idx.length?"":`<p class="muted">Keine falschen Aufgaben mehr – stark!</p>`}
+   <div>${idx.map(i=>{const x=list[i],v=r[i];return `<form class="ex ${v===true?"ok":v===false?"bad":""}" data-form="ex" data-k="${key}" data-i="${i}">
+     <p class="q"><b>${i+1}.</b> ${esc(x.q)}</p>
+     <div class="row" style="flex-wrap:nowrap"><input type="text" id="ex-${key}-${i}" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Antwort zu Aufgabe ${i+1}"><button class="btn">Prüfen</button></div>
+     ${v===true?`<p class="fb" style="color:var(--ok)"><b>Richtig.</b> ${esc(x.e||"")}</p>`:v===false?`<p class="fb" style="color:var(--bad)"><b>Lösung:</b> ${esc(x.a.split("|")[0])} <span class="muted">– ${esc(x.e||"")}</span></p>`:""}
+    </form>`}).join("")}</div>`;
+}
+function vGram(){
+  const t=S.gtab,g=GRAM[t];
+  return `<header class="top"><div><p class="eyebrow">Grammatik-Muster-Prinzip</p><h1>Grammatik</h1></div></header>
+  <div class="seg" role="group" aria-label="Thema">${Object.keys(GRAM).map(k=>`<button data-act="gtab" data-t="${k}" aria-pressed="${t===k}">${GRAM[k].title}</button>`).join("")}</div>
+  <section class="panel rule"><p class="eyebrow">1 · Regel kurz verstehen</p><ul>${g.rule.map(x=>`<li>${x}</li>`).join("")}</ul></section>
+  <section class="panel"><p class="eyebrow">2 · 3 Mustersätze auswendig</p><p class="muted small">Lies den deutschen Satz, sag den englischen laut, dann aufdecken. Hake ab, wenn er sitzt.</p>
+   ${g.pat.map((p,i)=>{const k=t+i,show=S["ps_"+k];return `<div class="pattern"><span class="n">${i+1}</span><div style="display:flex;flex-direction:column;gap:6px;min-width:0"><span class="de">${esc(p[0])}</span>
+    ${show?`<span class="en">${esc(p[1])}</span>`:`<div><button class="btn small" data-act="pshow" data-k="${k}">Englisch zeigen</button></div>`}
+    <label class="row small"><input type="checkbox" data-act="pat" data-k="${k}" ${S.pat[k]?"checked":""}> sitzt</label></div></div>`}).join("")}
+   <div class="row"><button class="btn ghost small" data-act="phide" data-t="${t}">Englisch wieder verdecken</button></div></section>
+  <section class="panel"><p class="eyebrow">3 · Anwenden</p>${g.ex?exListHTML(t,g.ex):`<p>Für dieses Thema gibt es ein eigenes Quiz mit allen Paaren.</p><div><button class="btn primary" data-act="wgo" data-t="quiz">Zum Quiz</button></div>`}</section>`;
+}
+
+/* ================== WÖRTER ================== */
+let QUIZ=null;
+function makeQuiz(n){
+  const items=[];
+  shuffle(SYN).slice(0,Math.ceil(n/2)).forEach(g=>{const [p,...rest]=shuffle(g);items.push({q:`Synonym zu „${p}“`,a:rest.join("|"),e:`${g.join(" = ")}`})});
+  shuffle(OPP).slice(0,Math.floor(n/2)).forEach(g=>{let p=g[0],a=g.slice(1);if(g.length===2&&Math.random()<.5){p=g[1];a=[g[0]]}items.push({q:`Gegenteil von „${p}“`,a:a.join("|"),e:`${g[0]} ◄► ${g.slice(1).join(" / ")}`})});
+  return shuffle(items);
+}
+function vWords(){
+  const t=S.wtab;let body="";
+  if(t==="fam"){const q=(S.fq||"").toLowerCase();const rows=FAM.filter(r=>!q||r.join(" ").toLowerCase().includes(q));
+    body=`<section class="panel"><p class="muted small">Aus deinen Unit-1-Vokabeln und dem Grundwortschatz. Lerne immer die ganze Familie zusammen.</p>
+    <input type="text" id="fsearch" placeholder="Wort suchen …" value="${esc(S.fq||"")}" aria-label="Wortfamilie suchen">
+    <div class="tablewrap"><table><thead><tr><th>Verb</th><th>Nomen</th><th>Adjektiv</th><th>Adverb</th><th>Gegenteil</th></tr></thead><tbody>
+    ${rows.map(r=>`<tr>${r.map((x,i)=>`<td${i===4?' style="color:var(--s-p)"':""}>${x==="—"?'<span class="muted">–</span>':esc(x)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>
+    <div><button class="btn primary" data-act="gtgo" data-t="wf">Wortfamilien üben</button></div></section>`}
+  else if(t==="quiz"){if(!QUIZ){QUIZ=makeQuiz(16);S.exr.quiz={};S.wo_quiz=false}
+    body=`<section class="panel"><div class="row" style="justify-content:space-between"><p class="muted small">16 zufällige Wörter. Mehrere Lösungen sind möglich – eine reicht.</p><button class="btn" data-act="newquiz">Neue Runde</button></div>${exListHTML("quiz",QUIZ)}</section>`}
+  else{body=`<section class="panel"><h3>Synonyme</h3><div class="pairs">${SYN.map(g=>`<div class="pair"><b>${esc(g[0])}</b> = ${esc(g.slice(1).join(" = "))}</div>`).join("")}</div></section>
+    <section class="panel"><h3>Gegenteile</h3><div class="pairs">${OPP.map(g=>`<div class="pair"><b>${esc(g[0])}</b> ◄► ${esc(g.slice(1).join(" / "))}</div>`).join("")}</div></section>`}
+  return `<header class="top"><div><p class="eyebrow">Word families · Synonyme · Gegenteile</p><h1>Wörter</h1></div></header>
+  <div class="seg" role="group" aria-label="Ansicht">${[["fam","Wortfamilien"],["quiz","Syn./Gegenteil-Quiz"],["lists","Listen"]].map(([k,l])=>`<button data-act="wtab" data-t="${k}" aria-pressed="${t===k}">${l}</button>`).join("")}</div>${body}`;
+}
+
+/* ================== FEHLER-LOGBUCH ================== */
+function vLog(){
+  const open=S.log.filter(e=>!e.solved),probs=CARDS.filter(c=>cs(c.id).s==="p");
+  return `<header class="top"><div><p class="eyebrow">Fehler-Logbuch & Stolperfallen</p><h1>Fehler</h1></div><span class="muted">${open.length} offen</span></header>
+  <section class="panel"><h3>Typische Stolperfallen</h3><p class="muted small">Die klassischen Fehler zu deinen Themen. Hake ab, was sitzt – den Rest liest du beim Abend-Reset.</p>
+   <div>${TRAPS.map((t,i)=>`<div class="trap ${S.trap[i]?"done":""}"><input type="checkbox" id="trap-${i}" data-act="trap" data-i="${i}" ${S.trap[i]?"checked":""} style="width:22px;height:22px;margin-top:2px"><label for="trap-${i}" class="tt"><b>${t[0]}</b><br><span class="small">${t[1]}</span></label></div>`).join("")}</div></section>
+  <section class="panel"><div class="row" style="justify-content:space-between"><h3>Problemwörter</h3><span class="muted small">${probs.length}</span></div>
+   ${probs.length?`<div class="pairs">${probs.map(c=>`<div class="pair"><b>${esc(c.en)}</b> – ${esc(c.de)}</div>`).join("")}</div><div><button class="btn primary" data-act="start" data-m="p" data-d="all">Problemstapel üben</button></div>`:`<p class="muted">Noch leer. Wörter, die du nicht weißt, landen automatisch hier.</p>`}</section>
+  <section class="panel" id="own"><h3>Mini-Context: meine 5 eigenen Sätze</h3><p class="muted small">Schreib kurze Sätze mit deinen Problemwörtern, z. B. „I used to be afraid of jellyfish.“</p>
+   <textarea id="ownt" placeholder="1. …&#10;2. …&#10;3. …&#10;4. …&#10;5. …">${esc(S.own||"")}</textarea></section>
+  <section class="panel"><h3>Mein Logbuch</h3>
+   <form data-form="log" class="day"><div class="row"><input type="text" id="lf" placeholder="Mein Fehler (z. B. didn't used to)" aria-label="Mein Fehler"></div>
+    <div class="row"><input type="text" id="lr" placeholder="So ist es richtig" aria-label="Richtig"></div>
+    <div class="row"><input type="text" id="ln" placeholder="Merksatz (optional)" aria-label="Merksatz"></div><div><button class="btn">Eintragen</button></div></form>
+   ${S.log.length?S.log.map((e,i)=>`<div class="log ${e.solved?"solved":""}"><div class="row" style="justify-content:space-between"><span class="chip">${esc(e.typ||"Eigener")}${e.n>1?` · ${e.n}×`:""}</span><button class="btn ghost small" data-act="solve" data-i="${i}">${e.solved?"Wieder öffnen":"Sitzt jetzt"}</button></div>
+     ${e.frage?`<span>${esc(e.frage)}</span>`:""}<span>${e.falsch?`<span class="wrong">${esc(e.falsch)}</span> → `:""}<span class="right">${esc(e.richtig)}</span></span>${e.notiz?`<span class="muted small">${esc(e.notiz)}</span>`:""}</div>`).join(""):`<p class="muted">Noch keine Fehler. Falsche Antworten aus Karten, Übungen und der Probe landen automatisch hier.</p>`}
+  </section>`;
+}
+
+/* ================== PROBE-SCHULAUFGABE ================== */
+function buildProbe(){
+  const pri=shuffle(CARDS.filter(c=>["p","f","n"].includes(cs(c.id).s))),rest=shuffle(CARDS.filter(c=>!pri.includes(c)));
+  const pick=(n,excl)=>pri.concat(rest).filter(c=>!excl.includes(c.id)).slice(0,n);
+  const a=pick(8,[]),b=pick(5,a.map(c=>c.id));
+  const sec=[
+   {t:"A · Vokabeln: Übersetze ins Englische",items:a.map(c=>({q:c.de,a:c.en,card:c.id,kind:"v"}))},
+   {t:"B · Mini-Context: Ergänze das fehlende Wort",items:b.map(c=>({q:c.ex.replace(/\[[^\]]+\]/,"___")+` (${c.de})`,a:target(c),card:c.id,kind:"v"}))},
+   {t:"C · Word families: Bilde die richtige Form",items:shuffle(EX_WF).slice(0,6).map(x=>Object.assign({kind:"e"},x))},
+   {t:"D · used to",items:shuffle(EX_USED).slice(0,6).map(x=>Object.assign({kind:"e"},x))},
+   {t:"E · Synonyme & Gegenteile",items:makeQuiz(5).map(x=>Object.assign({kind:"e"},x))},
+   {t:"F · -ing & Präpositionen",items:shuffle(EX_ING).slice(0,4).map(x=>Object.assign({kind:"e"},x))}];
+  S.probe={sec,ans:{},done:false,start:Date.now()};save();
+}
+function grade(p){return p>=90?1:p>=77?2:p>=63?3:p>=50?4:p>=30?5:6}
+function vTest(){
+  const P=S.probe;
+  if(!P)return `<header class="top"><div><p class="eyebrow">Simulation</p><h1>Probe-Schulaufgabe</h1></div></header>
+  <section class="panel"><p>34 Aufgaben wie in einer Schulaufgabe: Vokabeln, Mini-Context, Word families, used to, Synonyme/Gegenteile und -ing. Deine Problemwörter kommen bevorzugt dran.</p>
+  <p class="muted small">Plane 25 Minuten ein. Kein Nachschauen. Am Ende siehst du Punkte, eine grobe Note und alle Lösungen.</p><div><button class="btn primary big" data-act="probe-new" style="flex:0 0 auto">Probe starten</button></div></section>`;
+  let n=0,pts=0,max=0;
+  const html=P.sec.map((s,si)=>`<section class="panel"><h3>${s.t}</h3>${s.items.map((x,ii)=>{n++;const k=si+"-"+ii,v=P.ans[k]||"";let fb="";
+    if(P.done){max++;let r;if(x.kind==="v"){r=checkVocab(byId[x.card],v)}else r=checkEx(x.a,v)?"ok":"bad";const p=r==="ok"?1:r==="typo"?.5:0;pts+=p;
+     fb=`<p class="fb" style="color:var(${r==="bad"?"--bad":r==="typo"?"--warn":"--ok"})"><b>${r==="ok"?"Richtig":r==="typo"?"½ Punkt – Schreibweise":"Lösung: "+esc(x.a.split("|")[0])}</b>${x.e&&r!=="ok"?` <span class="muted">– ${esc(x.e)}</span>`:""}</p>`}
+    return `<div class="ex ${P.done?(fb.includes("--ok")?"ok":"bad"):""}"><p class="q"><b>${n}.</b> ${esc(x.q)}</p><input type="text" id="pr-${k}" data-pk="${k}" value="${esc(v)}" ${P.done?"disabled":""} autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Antwort ${n}">${fb}</div>`}).join("")}</section>`).join("");
+  const pct=max?Math.round(pts/max*100):0;
+  return `<header class="top"><div><p class="eyebrow">Simulation</p><h1>Probe-Schulaufgabe</h1></div>${P.done?"":`<span class="muted small">Gestartet ${new Date(P.start).toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"})} Uhr</span>`}</header>
+  ${P.done?`<section class="panel"><div class="row" style="gap:20px"><span class="grade">${grade(pct)}</span><div><b>${String(pts).replace(".",",")} von ${max} Punkten (${pct} %)</b><p class="muted small">Grobe Schätzung – deine Lehrkraft hat einen eigenen Notenschlüssel. Alle Fehler stehen jetzt im Logbuch, falsche Vokabeln im Problemstapel.</p></div></div>
+   <div class="row"><button class="btn primary" data-act="view" data-v="log">Zum Fehler-Logbuch</button><button class="btn" data-act="probe-new">Neue Probe</button></div></section>`:""}
+  ${html}
+  ${P.done?"":`<div class="row"><button class="btn primary big" data-act="probe-end">Abgeben & auswerten</button></div>`}`;
+}
+function endProbe(){
+  const P=S.probe;document.querySelectorAll("[data-pk]").forEach(i=>P.ans[i.dataset.pk]=i.value);
+  P.sec.forEach((s,si)=>s.items.forEach((x,ii)=>{const v=P.ans[si+"-"+ii]||"";
+   if(x.kind==="v"){const r=checkVocab(byId[x.card],v);if(r==="bad"){const st=cs(x.card);st.s="p";st.st=0;st.w++;addLog({key:"v:"+x.card,typ:"Probe · Vokabel",frage:x.q,falsch:v,richtig:x.a})}}
+   else if(!checkEx(x.a,v))addLog({key:"e:"+x.q,typ:"Probe · "+s.t.split("·")[1].trim(),frage:x.q,falsch:v,richtig:x.a.split("|")[0],notiz:x.e||""})}));
+  P.done=true;save();render();window.scrollTo(0,0);
+}
+
+/* ================== RENDER & EVENTS ================== */
+function render(){
+  renderNav();
+  const v=S.view;
+  $("#main").innerHTML=v==="plan"?vPlan():v==="cards"?vCards():v==="gram"?vGram():v==="words"?vWords():v==="log"?vLog():vTest();
+  const a=$("#ans");if(a)a.focus({preventScroll:true});
+}
+document.addEventListener("click",e=>{
+  const b=e.target.closest("[data-act]");if(!b)return;const d=b.dataset,act=d.act;
+  if(b.tagName==="INPUT")return;
+  switch(act){
+   case "view":go(d.v);break;
+   case "tick":S.plan[d.id]=!S.plan[d.id];save();render();break;
+   case "goto":{const s=PLAN.flatMap(x=>x.steps).find(x=>x.id===d.id),g=s.go;
+     if(g[0]==="cards"){startSession(g[1],g[2]);if(g[1]==="n"&&!SES.total&&counts(S.deck).f)startSession("f");}
+     else if(g[0]==="gram"){S.gtab=g[1];go("gram")}
+     else if(g[0]==="words"){S.wtab=g[1];go("words")}
+     else if(g[0]==="log"){go("log");if(g[1])setTimeout(()=>{const el=document.getElementById(g[1]);if(el)el.scrollIntoView({behavior:"smooth"})},50)}
+     else go(g[0]);break}
+   case "deck":S.deck=d.d;SES=null;save();render();break;
+   case "dir":S.dir=d.d;SES&&(SES.rev=false);save();render();break;
+   case "typing":S.typing=d.t==="1";save();render();break;
+   case "start":startSession(d.m,d.d);break;
+   case "endses":SES=null;render();break;
+   case "reveal":SES.rev=true;render();break;
+   case "rate":rate(d.ok==="1");break;
+   case "cycle":{const st=cs(d.id),o=["u","n","f","p","k"];st.s=o[(o.indexOf(st.s)+1)%5];st.st=0;save();render();break}
+   case "gtab":S.gtab=d.t;save();render();break;
+   case "wtab":S.wtab=d.t;save();render();break;
+   case "wgo":S.wtab=d.t;go("words");break;
+   case "gtgo":S.gtab=d.t;go("gram");break;
+   case "pshow":S["ps_"+d.k]=true;render();break;
+   case "phide":[0,1,2].forEach(i=>delete S["ps_"+d.t+i]);render();break;
+   case "wo":S["wo_"+d.k]=!S["wo_"+d.k];save();render();break;
+   case "exreset":S.exr[d.k]={};S["wo_"+d.k]=false;save();render();break;
+   case "newquiz":QUIZ=makeQuiz(16);S.exr.quiz={};S.wo_quiz=false;render();break;
+   case "solve":S.log[+d.i].solved=!S.log[+d.i].solved;save();render();break;
+   case "probe-new":buildProbe();render();window.scrollTo(0,0);break;
+   case "probe-end":endProbe();break;
+   case "export":{const code=btoa(unescape(encodeURIComponent(JSON.stringify(S))));const t=$("#xfer");t.value=code;
+     if(navigator.clipboard)navigator.clipboard.writeText(code).then(()=>toast("Code kopiert – jetzt auf dem anderen Gerät einfügen")).catch(()=>{t.select();toast("Code markiert – bitte kopieren")});else{t.select();toast("Code markiert – bitte kopieren")}break}
+   case "import":{try{const o=JSON.parse(decodeURIComponent(escape(atob($("#xfer").value.trim()))));if(!o||!o.c)throw 0;S=Object.assign(fresh(),o);S.view="plan";save();render();toast("Fortschritt übernommen")}catch(err){toast("Der Code ist ungültig. Bitte komplett kopieren.")}break}
+   case "reset-ask":$("#resetq").hidden=false;break;
+   case "reset-no":$("#resetq").hidden=true;break;
+   case "reset-do":S=fresh();SES=null;save();render();toast("Alles zurückgesetzt");break;
+  }
+});
+document.addEventListener("change",e=>{const t=e.target,d=t.dataset;
+  if(d.act==="trap"){S.trap[d.i]=t.checked;save();render()}
+  if(d.act==="pat"){S.pat[d.k]=t.checked;save()}
+  if(d.pk&&S.probe){S.probe.ans[d.pk]=t.value;save()}
+});
+document.addEventListener("input",e=>{const t=e.target;
+  if(t.id==="search"){S.q=t.value;const pos=t.selectionStart;render();const n=$("#search");n.focus();n.setSelectionRange(pos,pos)}
+  if(t.id==="fsearch"){S.fq=t.value;const pos=t.selectionStart;render();const n=$("#fsearch");n.focus();n.setSelectionRange(pos,pos)}
+  if(t.id==="ownt"){S.own=t.value;save()}
+  if(t.dataset.pk&&S.probe){S.probe.ans[t.dataset.pk]=t.value;clearTimeout(save.t);save.t=setTimeout(save,400)}
+});
+document.addEventListener("submit",e=>{e.preventDefault();const f=e.target,d=f.dataset;
+  if(d.form==="type"){const v=$("#ans").value;const c=byId[SES.queue[0]];SES.res=checkVocab(c,v);SES.lastInput=v;SES.rev=true;render();const btn=document.querySelector('[data-act="rate"]');btn&&btn.focus()}
+  if(d.form==="ex"){const k=d.k,i=+d.i,list=k==="quiz"?QUIZ:GRAM[k].ex,x=list[i],v=f.querySelector("input").value;
+    const ok=checkEx(x.a,v);S.exr[k]=S.exr[k]||{};S.exr[k][i]=ok;
+    if(!ok)addLog({key:"e:"+x.q,typ:k==="quiz"?"Syn./Gegenteil":GRAM[k].title,frage:x.q,falsch:v,richtig:x.a.split("|")[0],notiz:x.e||""});
+    save();render();const nx=document.getElementById(`ex-${k}-${i+1}`);if(nx)nx.focus({preventScroll:false})}
+  if(d.form==="log"){const lf=$("#lf").value.trim(),lr=$("#lr").value.trim();if(!lr&&!lf){toast("Bitte mindestens den Fehler oder die richtige Form eintragen");return}
+    addLog({typ:"Eigener",falsch:lf,richtig:lr||"?",notiz:$("#ln").value.trim()});render();toast("Eingetragen")}
+});
+render();
+if(window.__PWA__&&"serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(()=>{})}
+</script>
+
+</body>
+</html>
