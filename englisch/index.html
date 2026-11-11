@@ -128,7 +128,7 @@ function check(v){const t=RUN.q[0];RUN.ok=t.a.some(a=>norm(a)===norm(v));RUN.inp
 function next(){const t=RUN.q.shift();
   if(!RUN.miss[t.i])ws(t.i).h.push(RUN.ok);
   if(RUN.ok){RUN.right++}else{RUN.miss[t.i]=(RUN.miss[t.i]||0)+1;if(RUN.miss[t.i]<4)RUN.q.splice(Math.min(3,RUN.q.length),0,task(t.i,R[RUN.k].mode))}
-  RUN.rev=false;RUN.ok=null;if(!RUN.q.length){S.done[RUN.k]=Date.now()}save();render()}
+  RUN.rev=false;RUN.ok=null;RUN.typo=false;if(!RUN.q.length){S.done[RUN.k]=Date.now()}save();render()}
 function vRun(){
   if(RUN.pre)return`<div class="row sb"><h2>Runde 1: Laut lesen</h2><button class="btn g" data-a="stop">Abbrechen</button></div>
   <p class="muted">Lies jede Zeile einmal <b>laut</b>, mit Satz. Nicht auswendig lernen – gleich kommt der Abruf.</p>
@@ -143,7 +143,8 @@ function vRun(){
   return`<div class="row sb"><h2>${esc(R[RUN.k].n)}</h2><button class="btn g" data-a="stop">Abbrechen</button></div>
   <article class="card"><div class="row sb small muted"><span>Chance in der SA: <b class="pr">${w[2]} %</b></span><span>noch ${left}</span></div>
    <p class="q">${esc(t.q)}</p><p>${t.sub}</p>
-   ${RUN.rev?`<p class="res ${RUN.ok?"ok":"bad"}">${RUN.ok?"Richtig!":"Noch nicht – lies die Lösung laut, sie kommt gleich nochmal."}</p>
+   ${RUN.rev?`<p class="res ${RUN.ok?"ok":"bad"}">${RUN.ok?(RUN.typo?"Als richtig gezählt – schau dir die Schreibweise unten genau an.":"Richtig!"):"Noch nicht – lies die Lösung laut, sie kommt gleich nochmal."}</p>
+    ${!RUN.ok&&RUN.input&&RUN.input.trim()?`<p class="small">Du hast: <b>${esc(RUN.input)}</b></p><button class="btn" data-a="typo" style="border-color:var(--ok);color:var(--ok)">„Nur falsch geschrieben“ – als richtig zählen</button>`:""}
     <div class="ans"><span class="en">${esc(t.a[0])}</span><span>${esc(w[0])} = ${esc(w[1])}</span><span class="small">${esc(w[4]).replace(/\[([^\]]+)\]/,"<mark>$1</mark>")}</span><span class="small muted">${esc(w[3])}</span></div>
     <button class="btn p big" data-a="next" id="nx">Weiter</button>`
    :`<form id="f" class="row" style="flex-wrap:nowrap"><input type="text" id="in" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Antwort eintippen …" aria-label="Antwort"><button class="btn p">Prüfen</button></form>
@@ -181,6 +182,7 @@ document.addEventListener("click",e=>{const b=e.target.closest("[data-a]");if(!b
  if(a==="go"){RUN.pre=false;render()}
  if(a==="stop"){RUN=null;render()}
  if(a==="idk")check("");
+ if(a==="typo"){RUN.ok=true;RUN.typo=true;render()}
  if(a==="next")next();
  if(a==="restart")$("#rq").hidden=false;
  if(a==="restart2"){S={start:Date.now(),bed:S.bed,morning:S.morning,done:{},w:{}};save();RUN=null;render()}});
